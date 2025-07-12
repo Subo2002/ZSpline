@@ -33,7 +33,7 @@ pub const Vector2I = struct {
         return .{ a.x, a.y };
     }
 
-    pub fn toDouble(a: *Vector2I) Vector2B {
+    pub fn toDouble(a: Vector2I) Vector2B {
         return .{ @floatFromInt(a.x), @floatFromInt(a.y) };
     }
 };
