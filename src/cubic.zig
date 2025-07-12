@@ -4,7 +4,7 @@ const Vector2B = @import("root.zig").Vector2B;
 const std = @import("std");
 const QuadSpline = @import("root.zig").QuadSpline;
 
-const CubicSpline = struct {
+pub const CubicSpline = struct {
     p0: Vector2I,
     p1: Vector2I,
     p2: Vector2I,

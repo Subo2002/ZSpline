@@ -1,7 +1,7 @@
 const std = @import("std");
 const Line = @import("line.zig").Line;
 
-const Vector2I = struct {
+pub const Vector2I = struct {
     x: i32,
     y: i32,
 
@@ -38,7 +38,7 @@ const Vector2I = struct {
     }
 };
 
-const Vector2 = struct {
+pub const Vector2 = struct {
     x: f32,
     y: f32,
 
@@ -80,7 +80,7 @@ const Vector2 = struct {
     }
 };
 
-const Vector2B = struct {
+pub const Vector2B = struct {
     x: f64,
     y: f64,
 
@@ -116,7 +116,7 @@ const Vector2B = struct {
     }
 };
 
-const QuadSpline = struct {
+pub const QuadSpline = struct {
     p0: Vector2I,
     p1: Vector2I,
     p2: Vector2I,

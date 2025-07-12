@@ -1,6 +1,6 @@
 const Vector2I = @import("root.zig").Vector2I;
 
-const Line = struct {
+pub const Line = struct {
     p: Vector2I,
     q: Vector2I,
 
