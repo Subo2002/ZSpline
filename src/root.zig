@@ -1,67 +1,128 @@
 const std = @import("std");
-const testing = std.testing;
 const Line = @import("line.zig").Line;
 
-fn round(x: @Vector(2, f32)) @Vector(2, u16) {
-    var y: @Vector(2, u16) = @intFromFloat(x);
-    if (x.X - y.X >= 0.5)
-        y.X ++ 1;
-    if (x.Y - y.Y >= 0.5)
-        y.Y += 1;
-    return y;
-}
-
 const Vector2I = struct {
-    x: u16,
-    y: u16,
-};
+    x: i32,
+    y: i32,
 
-const QuadCurveParam = struct {
-    p0: @Vector(2, u16),
-    p1: @Vector(2, u16),
-    p2: @Vector(2, u16),
-
-    fn compImplct(c: *QuadCurveParam) QuadCurveImplct {
-        //translate to simplify
-        var p = c.p0 - c.p1;
-        var q = c.p2 - c.p1;
-
-        //find orientation
-        const s = .{
-            if ((q - p).X >= 0) 1 else -1,
-            if ((q - p).Y <= 0) 1 else -1,
-        };
-
-        //move it, move it
-        p *= s;
-        q *= s;
-
-        var cur = p.X * q.Y - p.Y * q.X;
-
-        //negate curvature
-        if (cur > 0) {
-            const temp = -p;
-            p = -q;
-            q = temp;
-        }
-
-        //some helpful mid-terms
-        const a = p + q;
-        cur = p.X * q.Y - p.Y * q.X; //curvature
-        const d = p - q;
-
-        return .{
-            .c20 = a.Y * a.Y,
-            .c11 = -2 * a.X * a.Y,
-            .c02 = a.X * a.X,
-            .c10 = 2 * d.Y * c,
-            .c01 = -2 * d.X * c,
-            .c00 = c * c,
-        };
+    fn init(x: i32, y: i32) Vector2I {
+        return .{ .x = x, .y = y };
     }
 
-    fn cutToMonotone(c: *QuadCurveParam, out_buffer: []QuadCurveParam) []QuadCurveParam {
-        const t: [2]f32 = -(c.p1 - c.p0) / @as(@Vector(2, f32), @floatFromInt(c.p0 - 2 * c.p1 + c.p2));
+    fn add(a: Vector2I, b: Vector2I) Vector2I {
+        return .{ a.x + b.x, a.y + b.y };
+    }
+
+    fn sub(a: Vector2I, b: Vector2I) Vector2I {
+        return .{ a.x - b.x, a.y - b.y };
+    }
+
+    fn mult(a: Vector2I, b: Vector2I) Vector2I {
+        return .{ a.x * b.x, a.y * b.y };
+    }
+
+    fn div(a: Vector2I, b: Vector2I) Vector2I {
+        return .{ a.x / b.x, a.y / b.y };
+    }
+
+    fn scale(a: Vector2I, c: i132) Vector2I {
+        return .{ a.x * c, a.y * c };
+    }
+
+    fn toFloat(a: Vector2I) Vector2 {
+        return .{ a.x, a.y };
+    }
+
+    fn toDouble(a: Vector2) Vector2B {
+        return .{ a.x, a.y };
+    }
+};
+
+const Vector2 = struct {
+    x: f32,
+    y: f32,
+
+    fn init(x: f32, y: f32) Vector2 {
+        return .{ .x = x, .y = y };
+    }
+
+    fn add(a: Vector2, b: Vector2) Vector2 {
+        return .{ a.x + b.x, a.y + b.y };
+    }
+
+    fn sub(a: Vector2, b: Vector2) Vector2 {
+        return .{ a.x - b.x, a.y - b.y };
+    }
+
+    fn mult(a: Vector2, b: Vector2) Vector2 {
+        return .{ a.x * b.x, a.y * b.y };
+    }
+
+    fn div(a: Vector2, b: Vector2) Vector2 {
+        return .{ a.x / b.x, a.y / b.y };
+    }
+
+    fn scale(a: Vector2, c: f32) Vector2 {
+        return .{ a.x * c, a.y * c };
+    }
+
+    fn toVector2B(a: Vector2) Vector2B {
+        return .{ a.x, a.y };
+    }
+
+    fn round(x: Vector2) Vector2I {
+        var y: Vector2I = .{ @intFromFloat(x.x), @intFromFloat(x.y) };
+        if (x.X - y.X >= 0.5)
+            y.X += 1;
+        if (x.Y - y.Y >= 0.5)
+            y.Y += 1;
+        return y;
+    }
+};
+
+const Vector2B = struct {
+    x: f64,
+    y: f64,
+
+    fn init(x: f64, y: f64) Vector2B {
+        return .{ .x = x, .y = y };
+    }
+
+    fn add(a: Vector2B, b: Vector2B) Vector2B {
+        return .{ a.x + b.x, a.y + b.y };
+    }
+
+    fn sub(a: Vector2B, b: Vector2B) Vector2B {
+        return .{ a.x - b.x, a.y - b.y };
+    }
+
+    fn mult(a: Vector2B, b: Vector2B) Vector2B {
+        return .{ a.x * b.x, a.y * b.y };
+    }
+
+    fn div(a: Vector2B, b: Vector2B) Vector2B {
+        return .{ a.x / b.x, a.y / b.y };
+    }
+
+    fn scale(a: Vector2B, c: f64) Vector2B {
+        return .{ a.x * c, a.y * c };
+    }
+
+    fn trunc(a: Vector2B) Vector2 {
+        return .{
+            @floatCast(a.x),
+            @floatCast(a.y),
+        };
+    }
+};
+
+const QuadSpline = struct {
+    p0: Vector2I,
+    p1: Vector2I,
+    p2: Vector2I,
+
+    fn cutToMonotone(c: *QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
+        const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
 
         const State = packed struct {
             x_valid: bool,
@@ -90,21 +151,19 @@ const QuadCurveParam = struct {
                 return out_buffer[0..1];
             },
             .x_valid => {
-                const p0: @Vector(2, f32) = c.p0;
-                const p1: @Vector(2, f32) = c.p1;
-                const p2: @Vector(2, f32) = c.p2;
+                const p0: Vector2 = c.p0;
+                const p1: Vector2 = c.p1;
+                const p2: Vector2 = c.p2;
 
                 //find the point to cut at
-                const p4: @Vector(2, u16) = c.evaluate(t[0]);
-
-                const one: @Vector(2, f32) = @splat(1.0);
+                const p4: Vector2I = c.evaluate(t[0]);
 
                 //find y-intersections with axes of the spline
-                const t3: @Vector(2, f32) = @splat((p4.X - p0.X) / (p1.X - p0.X));
-                const p3: @Vector(2, u16) = round(p0 * (one - t3) + p1 * t3);
+                const t3: f32 = (p4.X - p0.X) / (p1.X - p0.X);
+                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3));
 
-                const t5: @Vector(2, f32) = @splat((p4.X - p2.X) / (p1.X - p2.X));
-                const p5: @Vector(2, u16) = round(p2 * (one - t5) + p1 * t5);
+                const t5: f32 = (p4.X - p2.X) / (p1.X - p2.X);
+                const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
@@ -112,21 +171,19 @@ const QuadCurveParam = struct {
                 return out_buffer[0..2];
             },
             .y_valid => {
-                const p0: @Vector(2, f32) = c.p0;
-                const p1: @Vector(2, f32) = c.p1;
-                const p2: @Vector(2, f32) = c.p2;
+                const p0: Vector2 = c.p0;
+                const p1: Vector2 = c.p1;
+                const p2: Vector2 = c.p2;
 
                 //find the point to cut at
-                const p4: @Vector(2, u16) = c.evaluate(t[1]);
-
-                const one: @Vector(2, f32) = @splat(1.0);
+                const p4: Vector2I = c.evaluate(t[1]);
 
                 //find y-intersections with axes of the spline
-                const t3: @Vector(2, f32) = @splat((p4.Y - p0.Y) / (p1.Y - p0.Y));
-                const p3: @Vector(2, u16) = round(p0 * (one - t3) + p1 * t3);
+                const t3: f32 = (p4.Y - p0.Y) / (p1.Y - p0.Y);
+                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
-                const t5: @Vector(2, f32) = @splat((p4.Y - p2.Y) / (p1.Y - p2.Y));
-                const p5: @Vector(2, u16) = round(p2 * (one - t5) + p1 * t5);
+                const t5: f32 = (p4.Y - p2.Y) / (p1.Y - p2.Y);
+                const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
@@ -134,45 +191,41 @@ const QuadCurveParam = struct {
                 return out_buffer[0..2];
             },
             .x_then_y => {
-                const p0: @Vector(2, f32) = c.p0;
-                const p1: @Vector(2, f32) = c.p1;
-                const p2: @Vector(2, f32) = c.p2;
+                const p0: Vector2 = c.p0;
+                const p1: Vector2 = c.p1;
+                const p2: Vector2 = c.p2;
 
-                const one: @Vector(2, f32) = @splat(1.0);
-
-                const p4: @Vector(2, u16) = c.evaluate(t[1]);
-                const t3: @Vector(2, f32) = @splat((p4.Y - p0.Y) / (p1.Y - p0.Y));
-                const p3: @Vector(2, u16) = round(p0 * (one - t3) + p1 * t3);
+                const p4: Vector2I = c.evaluate(t[1]);
+                const t3: f32 = (p4.Y - p0.Y) / (p1.Y - p0.Y);
+                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
 
-                const p6: @Vector(2, u16) = c.evaluate(t[0]);
-                const t7: @Vector(2, f32) = (p6.X - p2.X) / (p1.X - p2.X);
-                const p7: @Vector(2, u16) = round(p2 * (one - t7) + p1 * t7);
+                const p6: Vector2I = c.evaluate(t[0]);
+                const t7: f32 = (p6.X - p2.X) / (p1.X - p2.X);
+                const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = p2 };
 
-                const p5: @Vector(2, u16) = .{ p6[0], p4[1] };
+                const p5: Vector2I = .{ p6[0], p4[1] };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
             },
             .y_then_x => {
-                const p0: @Vector(2, f32) = c.p0;
-                const p1: @Vector(2, f32) = c.p1;
-                const p2: @Vector(2, f32) = c.p2;
+                const p0: Vector2 = c.p0;
+                const p1: Vector2 = c.p1;
+                const p2: Vector2 = c.p2;
 
-                const one: @Vector(2, f32) = @splat(1.0);
-
-                const p4: @Vector(2, u16) = c.evaluate(t[0]);
-                const t3: @Vector(2, f32) = @splat((p4.X - p0.X) / (p1.X - p0.X));
-                const p3: @Vector(2, u16) = round(p0 * (one - t3) + p1 * t3);
+                const p4: Vector2I = c.evaluate(t[0]);
+                const t3: f32 = (p4.X - p0.X) / (p1.X - p0.X);
+                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
 
-                const p6: @Vector(2, u16) = c.evaluate(t[1]);
-                const t7: @Vector(2, f32) = (p6.Y - p2.Y) / (p1.Y - p2.Y);
-                const p7: @Vector(2, u16) = round(p2 * (one - t7) + p1 * t7);
+                const p6: Vector2I = c.evaluate(t[1]);
+                const t7: f32 = (p6.Y - p2.Y) / (p1.Y - p2.Y);
+                const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = p2 };
 
-                const p5: @Vector(2, u16) = .{ p4[0], p6[1] };
+                const p5: Vector2I = .{ p4[0], p6[1] };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
@@ -180,23 +233,23 @@ const QuadCurveParam = struct {
         }
     }
 
-    fn evaluate(c: *QuadCurveParam, t: f32) @Vector(2, u16) {
-        const p0: @Vector(2, f32) = c.p0;
-        const p1: @Vector(2, f32) = c.p1;
-        const p2: @Vector(2, f32) = c.p2;
+    fn evaluate(c: *QuadSpline, t: f32) Vector2I {
+        const p0: Vector2 = c.p0;
+        const p1: Vector2 = c.p1;
+        const p2: Vector2 = c.p2;
 
-        return round(p0 * (1 - t) * (1 - t) + 2 * p1 * (1 - t) * t + p2 * t * t);
+        return p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t)).round();
     }
 
-    fn drawMonotone(c: *QuadCurveParam, out_buffer: []@Vector(2, u16)) []@Vector(2, u16) {
+    fn drawMonotone(c: *QuadSpline, out_buffer: []Vector2I) []Vector2I {
         //translate to simplify
         var p = c.p0 - c.p1;
         var q = c.p2 - c.p1;
 
         //find orientation
-        const s = .{
-            if ((q - p).X >= 0) 1 else -1,
-            if ((q - p).Y <= 0) 1 else -1,
+        const s: Vector2I = .{
+            .x = if ((q - p).X >= 0) 1 else -1,
+            .y = if ((q - p).Y <= 0) 1 else -1,
         };
 
         //move it, move it
@@ -211,8 +264,7 @@ const QuadCurveParam = struct {
             p = -q;
             q = temp;
 
-            temp = p0;
-
+            temp = c.p0;
         }
 
         //some helpful mid-terms
@@ -226,9 +278,7 @@ const QuadCurveParam = struct {
         const c10: u32 = 2 * d.Y * c;
         const c01: u32 = -2 * d.X * c;
         const c00: u32 = c * c;
-
-        var p: @Vector(2, u16) = p0 - p1;
-        var q: @Vector(2, u16) = p2 - p1;
+        _ = c00;
 
         if (!((q - p)[0] >= 0 and (q - p)[1] <= 0))
             std.debug.print("FAIL");
@@ -244,48 +294,45 @@ const QuadCurveParam = struct {
 
         if (cur == 0) //straight line
         {
-            const line: Line = .{ .p = p0, .q = p2 };
-            return line.ComputePixels(pixelsBuffer);
+            const line: Line = .{ .p = c.p0, .q = c.p2 };
+            return line.ComputePixels(out_buffer);
         }
 
-        //step directions
-        int sx = p0.X < p2.X ? 1 : -1;
-        int sy = p0.Y < p2.Y ? 1 : -1;
-
         //2nd degree differences, hence CONSTANT
-        long xx = 2 * curve.c20;
-        long yy = 2 * curve.c02;
-        long xy = -/* sx * sy * */ curve.c11;
+        const xx = 2 * c.c20;
+        const yy = 2 * c.c02;
+        const xy = c.c11;
 
         //1st degrree differences
-        Int128 dx = 
-            2 * curve.c20 * p.X + 
-            curve.c20 + 
-            curve.c11 * p.Y + 
-            curve.c10;
-        Int128 dy = 
-            2 * (-1) * curve.c02 * p.Y + 
-            curve.c02 + 
-            (-1) * curve.c11 * p.X + 
-            (-1) * curve.c01;
-        Int128 e = dx + dy + xy;
+        var dx: u64 =
+            2 * c20 * p.X +
+            c20 +
+            c11 * p.Y +
+            c10;
+        var dy: u64 =
+            2 * (-1) * c02 * p.Y +
+            c02 +
+            (-1) * c11 * p.X +
+            (-1) * c01;
+        var e: u64 = dx + dy + xy;
 
-        Vector2I pos = p0;
-        int no = 0;
-        bool yStep;
-        bool xStep;
-            
-        while (dy > 0 && dx < 0 && no < pixelsBuffer.Length) //if the gradient changes then alg fails
+        var pos: Vector2I = c.p0;
+        var no = 0;
+        var yStep: bool = undefined;
+        var xStep: bool = undefined;
+
+        while (dy > 0 and dx < 0 and no < out_buffer.len) //if the gradient changes then alg fails
         {
-            pixelsBuffer[no++] = pos;
-            if (pos == p2)
+            out_buffer[no] = pos;
+            no += 1;
+            if (pos == c.p2)
                 break;
 
             yStep = 2 * e < dy;
             xStep = 2 * e > dx;
             if (xStep) //x step
             {
-                pos.X += sx;
+                pos.X += s.x;
                 dy += xy;
                 dx += xx;
                 e += dx + xy;
@@ -293,7 +340,7 @@ const QuadCurveParam = struct {
 
             if (yStep) //y step
             {
-                pos.Y += sy;
+                pos.Y += s.y;
                 dx += xy;
                 dy += yy;
                 e += dy + xy;
@@ -302,13 +349,12 @@ const QuadCurveParam = struct {
 
         //algorithm failed so is too close to being a straight line
         //do rest with s straight line
-        if (pos != p2)
-        {
-            Line line = new(pos, p2);
-            Span<Vector2I> linePixels = line.ComputePixels(pixelsBuffer[no..]);
-            no += linePixels.Length;
+        if (pos != c.p2) {
+            const line: Line = .{ .p0 = pos, .p1 = c.p2 };
+            const linePixels: []Vector2I = line.draw(out_buffer[no..]);
+            no += linePixels.len;
         }
 
-        return pixelsBuffer[0..no];
+        return out_buffer[0..no];
     }
 };
