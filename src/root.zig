@@ -5,7 +5,7 @@ pub const Vector2I = struct {
     x: i32,
     y: i32,
 
-    const zero: Vector2I = .{ .x = 0, .y = 0 };
+    pub const zero: Vector2I = .{ .x = 0, .y = 0 };
 
     pub fn init(x: i32, y: i32) Vector2I {
         return .{ .x = x, .y = y };
@@ -44,7 +44,7 @@ pub const Vector2 = struct {
     x: f32,
     y: f32,
 
-    const zero: Vector2 = .{ .x = 0, .y = 0 };
+    pub const zero: Vector2 = .{ .x = 0, .y = 0 };
 
     pub fn init(x: f32, y: f32) Vector2 {
         return .{ .x = x, .y = y };
@@ -88,7 +88,7 @@ pub const Vector2B = struct {
     x: f64,
     y: f64,
 
-    const zero: Vector2B = .{ .x = 0, .y = 0 };
+    pub const zero: Vector2B = .{ .x = 0, .y = 0 };
 
     pub fn init(x: f64, y: f64) Vector2B {
         return .{ .x = x, .y = y };
