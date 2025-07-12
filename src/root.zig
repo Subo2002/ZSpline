@@ -116,8 +116,8 @@ pub const Vector2B = struct {
 
     pub fn trunc(a: Vector2B) Vector2 {
         return .{
-            @floatCast(a.x),
-            @floatCast(a.y),
+            .x = @floatCast(a.x),
+            .y = @floatCast(a.y),
         };
     }
 
