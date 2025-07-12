@@ -79,7 +79,7 @@ pub const Vector2 = struct {
         if (a.x - @as(f32, @floatFromInt(b.y)) >= 0.5)
             b.x += 1;
         if (a.y - @as(f32, @floatFromInt(b.y)) >= 0.5)
-            a.y += 1;
+            b.y += 1;
         return b;
     }
 };
@@ -126,7 +126,7 @@ pub const Vector2B = struct {
         if (a.x - @as(f64, @floatFromInt(b.y)) >= 0.5)
             b.x += 1;
         if (a.y - @as(f64, @floatFromInt(b.y)) >= 0.5)
-            a.y += 1;
+            b.y += 1;
         return b;
     }
 };
