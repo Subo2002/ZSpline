@@ -5,35 +5,35 @@ pub const Vector2I = struct {
     x: i32,
     y: i32,
 
-    fn init(x: i32, y: i32) Vector2I {
+    pub fn init(x: i32, y: i32) Vector2I {
         return .{ .x = x, .y = y };
     }
 
-    fn add(a: Vector2I, b: Vector2I) Vector2I {
+    pub fn add(a: Vector2I, b: Vector2I) Vector2I {
         return .{ a.x + b.x, a.y + b.y };
     }
 
-    fn sub(a: Vector2I, b: Vector2I) Vector2I {
+    pub fn sub(a: Vector2I, b: Vector2I) Vector2I {
         return .{ a.x - b.x, a.y - b.y };
     }
 
-    fn mult(a: Vector2I, b: Vector2I) Vector2I {
+    pub fn mult(a: Vector2I, b: Vector2I) Vector2I {
         return .{ a.x * b.x, a.y * b.y };
     }
 
-    fn div(a: Vector2I, b: Vector2I) Vector2I {
+    pub fn div(a: Vector2I, b: Vector2I) Vector2I {
         return .{ a.x / b.x, a.y / b.y };
     }
 
-    fn scale(a: Vector2I, c: i132) Vector2I {
+    pub fn scale(a: Vector2I, c: i132) Vector2I {
         return .{ a.x * c, a.y * c };
     }
 
-    fn toFloat(a: Vector2I) Vector2 {
+    pub fn toFloat(a: Vector2I) Vector2 {
         return .{ a.x, a.y };
     }
 
-    fn toDouble(a: Vector2) Vector2B {
+    pub fn toDouble(a: Vector2) Vector2B {
         return .{ a.x, a.y };
     }
 };
@@ -42,35 +42,35 @@ pub const Vector2 = struct {
     x: f32,
     y: f32,
 
-    fn init(x: f32, y: f32) Vector2 {
+    pub fn init(x: f32, y: f32) Vector2 {
         return .{ .x = x, .y = y };
     }
 
-    fn add(a: Vector2, b: Vector2) Vector2 {
+    pub fn add(a: Vector2, b: Vector2) Vector2 {
         return .{ a.x + b.x, a.y + b.y };
     }
 
-    fn sub(a: Vector2, b: Vector2) Vector2 {
+    pub fn sub(a: Vector2, b: Vector2) Vector2 {
         return .{ a.x - b.x, a.y - b.y };
     }
 
-    fn mult(a: Vector2, b: Vector2) Vector2 {
+    pub fn mult(a: Vector2, b: Vector2) Vector2 {
         return .{ a.x * b.x, a.y * b.y };
     }
 
-    fn div(a: Vector2, b: Vector2) Vector2 {
+    pub fn div(a: Vector2, b: Vector2) Vector2 {
         return .{ a.x / b.x, a.y / b.y };
     }
 
-    fn scale(a: Vector2, c: f32) Vector2 {
+    pub fn scale(a: Vector2, c: f32) Vector2 {
         return .{ a.x * c, a.y * c };
     }
 
-    fn toVector2B(a: Vector2) Vector2B {
+    pub fn toVector2B(a: Vector2) Vector2B {
         return .{ a.x, a.y };
     }
 
-    fn round(x: Vector2) Vector2I {
+    pub fn round(x: Vector2) Vector2I {
         var y: Vector2I = .{ @intFromFloat(x.x), @intFromFloat(x.y) };
         if (x.X - y.X >= 0.5)
             y.X += 1;
