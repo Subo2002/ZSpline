@@ -5,36 +5,38 @@ pub const Vector2I = struct {
     x: i32,
     y: i32,
 
+    const zero: Vector2I = .{ .x = 0, .y = 0 };
+
     pub fn init(x: i32, y: i32) Vector2I {
         return .{ .x = x, .y = y };
     }
 
     pub fn add(a: Vector2I, b: Vector2I) Vector2I {
-        return .{ a.x + b.x, a.y + b.y };
+        return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
     pub fn sub(a: Vector2I, b: Vector2I) Vector2I {
-        return .{ a.x - b.x, a.y - b.y };
+        return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
     pub fn mult(a: Vector2I, b: Vector2I) Vector2I {
-        return .{ a.x * b.x, a.y * b.y };
+        return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
     pub fn div(a: Vector2I, b: Vector2I) Vector2I {
-        return .{ a.x / b.x, a.y / b.y };
+        return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
     pub fn scale(a: Vector2I, c: i132) Vector2I {
-        return .{ a.x * c, a.y * c };
+        return .{ .x = a.x * c, .y = a.y * c };
     }
 
     pub fn toFloat(a: Vector2I) Vector2 {
-        return .{ a.x, a.y };
+        return .{ .x = @floatFromInt(a.x), .y = @floatFromInt(a.y) };
     }
 
     pub fn toDouble(a: Vector2I) Vector2B {
-        return .{ @floatFromInt(a.x), @floatFromInt(a.y) };
+        return .{ .x = @floatFromInt(a.x), .y = @floatFromInt(a.y) };
     }
 };
 
@@ -42,36 +44,38 @@ pub const Vector2 = struct {
     x: f32,
     y: f32,
 
+    const zero: Vector2 = .{ .x = 0, .y = 0 };
+
     pub fn init(x: f32, y: f32) Vector2 {
         return .{ .x = x, .y = y };
     }
 
     pub fn add(a: Vector2, b: Vector2) Vector2 {
-        return .{ a.x + b.x, a.y + b.y };
+        return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
     pub fn sub(a: Vector2, b: Vector2) Vector2 {
-        return .{ a.x - b.x, a.y - b.y };
+        return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
     pub fn mult(a: Vector2, b: Vector2) Vector2 {
-        return .{ a.x * b.x, a.y * b.y };
+        return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
     pub fn div(a: Vector2, b: Vector2) Vector2 {
-        return .{ a.x / b.x, a.y / b.y };
+        return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
     pub fn scale(a: Vector2, c: f32) Vector2 {
-        return .{ a.x * c, a.y * c };
+        return .{ .x = a.x * c, .y = a.y * c };
     }
 
     pub fn toVector2B(a: Vector2) Vector2B {
-        return .{ a.x, a.y };
+        return .{ .x = a.x, .y = a.y };
     }
 
     pub fn round(x: Vector2) Vector2I {
-        var y: Vector2I = .{ @intFromFloat(x.x), @intFromFloat(x.y) };
+        var y: Vector2I = .{ .x = @intFromFloat(x.x), .y = @intFromFloat(x.y) };
         if (x.X - y.X >= 0.5)
             y.X += 1;
         if (x.Y - y.Y >= 0.5)
@@ -84,28 +88,30 @@ pub const Vector2B = struct {
     x: f64,
     y: f64,
 
+    const zero: Vector2B = .{ .x = 0, .y = 0 };
+
     pub fn init(x: f64, y: f64) Vector2B {
         return .{ .x = x, .y = y };
     }
 
     pub fn add(a: Vector2B, b: Vector2B) Vector2B {
-        return .{ a.x + b.x, a.y + b.y };
+        return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
     pub fn sub(a: Vector2B, b: Vector2B) Vector2B {
-        return .{ a.x - b.x, a.y - b.y };
+        return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
     pub fn mult(a: Vector2B, b: Vector2B) Vector2B {
-        return .{ a.x * b.x, a.y * b.y };
+        return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
     pub fn div(a: Vector2B, b: Vector2B) Vector2B {
-        return .{ a.x / b.x, a.y / b.y };
+        return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
     pub fn scale(a: Vector2B, c: f64) Vector2B {
-        return .{ a.x * c, a.y * c };
+        return .{ .x = a.x * c, .y = a.y * c };
     }
 
     pub fn trunc(a: Vector2B) Vector2 {
@@ -126,7 +132,7 @@ pub const QuadSpline = struct {
     };
 
     pub fn draw(c: *QuadSpline, out_buffer: []Vector2I) []Vector2I {
-        const curves: []QuadSpline = [1]QuadSpline{.{ 0, 0, 0 }} ** 3;
+        const curves: []QuadSpline = ([1]QuadSpline{.{ .p0 = .zero, .p1 = .zero, .p2 = .zero }} ** 3)[0..3];
         curves = c.cutToMonotone(curves);
         switch (curves.len) {
             1 => return curves[0].DrawMonotone(out_buffer),
