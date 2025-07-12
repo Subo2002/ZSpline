@@ -37,8 +37,8 @@
     // internet connectivity.
     .dependencies = .{
         .ZSpline = .{
-            .url = "git+https://github.com/Subo2002/ZSpline.git#cfde96bdaab681ec9082afb5d22f67717fd0865d",
-            .hash = "ZSpline-0.0.0-kRSV_CZiAAB9QTi1jg6109GzroD0VTHqWi-1USm0xJSN",
+            .url = "git+https://github.com/Subo2002/ZSpline.git#fe786e4cfaa865fec031481ea8a54cf56c0568c1",
+            .hash = "ZSpline-0.0.0-kRSV_PpcAAA05k7yFFNi5rGiphGocacc8otCGh86WjPx",
         },
     },
     .paths = .{

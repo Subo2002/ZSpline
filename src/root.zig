@@ -76,10 +76,10 @@ pub const Vector2 = struct {
 
     pub fn round(a: Vector2) Vector2I {
         var b: Vector2I = .{ .x = @intFromFloat(a.x), .y = @intFromFloat(a.y) };
-        if (a.X - b.X >= 0.5)
-            b.X += 1;
-        if (a.Y - b.Y >= 0.5)
-            a.Y += 1;
+        if (a.x - b.y >= 0.5)
+            b.x += 1;
+        if (a.y - b.y >= 0.5)
+            a.y += 1;
         return b;
     }
 };
@@ -123,10 +123,10 @@ pub const Vector2B = struct {
 
     pub fn round(a: Vector2) Vector2I {
         var b: Vector2I = .{ .x = @intFromFloat(a.x), .y = @intFromFloat(a.y) };
-        if (a.X - b.X >= 0.5)
-            b.X += 1;
-        if (a.Y - b.Y >= 0.5)
-            a.Y += 1;
+        if (a.x - b.y >= 0.5)
+            b.x += 1;
+        if (a.y - b.y >= 0.5)
+            a.y += 1;
         return b;
     }
 };
