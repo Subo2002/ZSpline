@@ -10,7 +10,7 @@ pub const CubicSpline = struct {
     p2: Vector2I,
     p3: Vector2I,
 
-    fn draw(c: *CubicSpline, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *CubicSpline, out_buffer: []Vector2I) []Vector2I {
         var monotoneParts: []CubicSpline = [5]CubicSpline{.{
             .{ 0, 0, 0, 0 },
         }} ** 5;

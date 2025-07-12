@@ -84,31 +84,31 @@ pub const Vector2B = struct {
     x: f64,
     y: f64,
 
-    fn init(x: f64, y: f64) Vector2B {
+    pub fn init(x: f64, y: f64) Vector2B {
         return .{ .x = x, .y = y };
     }
 
-    fn add(a: Vector2B, b: Vector2B) Vector2B {
+    pub fn add(a: Vector2B, b: Vector2B) Vector2B {
         return .{ a.x + b.x, a.y + b.y };
     }
 
-    fn sub(a: Vector2B, b: Vector2B) Vector2B {
+    pub fn sub(a: Vector2B, b: Vector2B) Vector2B {
         return .{ a.x - b.x, a.y - b.y };
     }
 
-    fn mult(a: Vector2B, b: Vector2B) Vector2B {
+    pub fn mult(a: Vector2B, b: Vector2B) Vector2B {
         return .{ a.x * b.x, a.y * b.y };
     }
 
-    fn div(a: Vector2B, b: Vector2B) Vector2B {
+    pub fn div(a: Vector2B, b: Vector2B) Vector2B {
         return .{ a.x / b.x, a.y / b.y };
     }
 
-    fn scale(a: Vector2B, c: f64) Vector2B {
+    pub fn scale(a: Vector2B, c: f64) Vector2B {
         return .{ a.x * c, a.y * c };
     }
 
-    fn trunc(a: Vector2B) Vector2 {
+    pub fn trunc(a: Vector2B) Vector2 {
         return .{
             @floatCast(a.x),
             @floatCast(a.y),
@@ -120,6 +120,30 @@ pub const QuadSpline = struct {
     p0: Vector2I,
     p1: Vector2I,
     p2: Vector2I,
+
+    const errors = error{
+        weird,
+    };
+
+    pub fn draw(c: *QuadSpline, out_buffer: []Vector2I) []Vector2I {
+        const curves: []QuadSpline = [1]QuadSpline{.{ 0, 0, 0 }} ** 3;
+        curves = c.cutToMonotone(curves);
+        switch (curves.len) {
+            1 => return curves[0].DrawMonotone(out_buffer),
+            2 => {
+                const c1 = curves[0].drawMonotone(out_buffer);
+                const c2 = curves[1].drawMonotone(out_buffer[c1.len..]);
+                return out_buffer[0..(c1.len + c2.len)];
+            },
+            3 => {
+                const c1 = curves[0].drawMonotone(out_buffer);
+                const c2 = curves[1].drawMonotone(out_buffer[c1.len..]);
+                const c3 = curves[2].drawMonotone(out_buffer[(c1.len + c2.len)..]);
+                return out_buffer[0..(c1.len + c2.len + c3.len)];
+            },
+            else => unreachable,
+        }
+    }
 
     fn cutToMonotone(c: *QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
         const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
