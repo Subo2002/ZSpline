@@ -28,8 +28,8 @@ pub const CubicSpline = struct {
         var noPoints: u16 = 0;
         for (0..monotoneParts.len) |i| {
             curves = monotoneParts[i].reduce();
-            noPoints += curves[0].DrawMonotone(out_buffer[noPoints..]).len;
-            noPoints += curves[1].DrawMonotone(out_buffer[noPoints..]).len;
+            noPoints += curves[0].drawMonotone(out_buffer[noPoints..]).len;
+            noPoints += curves[1].drawMonotone(out_buffer[noPoints..]).len;
         }
 
         noPoints = if (noPoints > out_buffer.len) out_buffer.len else noPoints;
