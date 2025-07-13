@@ -141,7 +141,7 @@ pub const QuadSpline = struct {
         weird,
     };
 
-    pub fn draw(c: *QuadSpline, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
         const curves: []QuadSpline = ([1]QuadSpline{.{ .p0 = .zero, .p1 = .zero, .p2 = .zero }} ** 3)[0..3];
         curves = c.cutToMonotone(curves);
         switch (curves.len) {
@@ -161,7 +161,7 @@ pub const QuadSpline = struct {
         }
     }
 
-    fn cutToMonotone(c: *QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
+    fn cutToMonotone(c: *const QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
         const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
 
         const State = packed struct {
@@ -273,7 +273,7 @@ pub const QuadSpline = struct {
         }
     }
 
-    fn evaluate(c: *QuadSpline, t: f32) Vector2I {
+    fn evaluate(c: *const QuadSpline, t: f32) Vector2I {
         const p0: Vector2 = c.p0;
         const p1: Vector2 = c.p1;
         const p2: Vector2 = c.p2;
@@ -281,7 +281,7 @@ pub const QuadSpline = struct {
         return p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t)).round();
     }
 
-    fn drawMonotone(c: *QuadSpline, out_buffer: []Vector2I) []Vector2I {
+    fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
         //translate to simplify
         var p = c.p0 - c.p1;
         var q = c.p2 - c.p1;

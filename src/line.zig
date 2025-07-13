@@ -4,7 +4,7 @@ pub const Line = struct {
     p: Vector2I,
     q: Vector2I,
 
-    pub fn draw(c: *Line, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *const Line, out_buffer: []Vector2I) []Vector2I {
         var i: u32 = 0;
 
         const p: Vector2I = c.p;

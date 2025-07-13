@@ -10,8 +10,8 @@ pub const CubicSpline = struct {
     p2: Vector2I,
     p3: Vector2I,
 
-    pub fn draw(c: *CubicSpline, out_buffer: []Vector2I) []Vector2I {
-        var monotoneParts: []CubicSpline = [5]CubicSpline{.{
+    pub fn draw(c: *const CubicSpline, out_buffer: []Vector2I) []Vector2I {
+        var monotoneParts: []CubicSpline = [1]CubicSpline{.{
             .{ .p0 = .zero, .p1 = .zero, .p2 = .zero, .p3 = .zero },
         }} ** 5;
         monotoneParts = c.cutToMontone(monotoneParts);
@@ -29,7 +29,7 @@ pub const CubicSpline = struct {
     }
 
     //buffer needs room for atleast 5 CubicSplines (4 possible turning points -> 4 cuts -> 5 pieces)
-    fn cutToMontone(c: *CubicSpline, out_buffer: []Vector2I) []Vector2I {
+    fn cutToMontone(c: *const CubicSpline, out_buffer: []Vector2I) []Vector2I {
         //compute turning points
         //coefficients of the derivative of Cubic Spline, but took out a factor of 3
         const c0: Vector2I = c.p0.add(c.p1).scale(-1);
@@ -124,7 +124,7 @@ pub const CubicSpline = struct {
         return out_buffer;
     }
 
-    fn evaluate(c: *CubicSpline, t: f64) Vector2I {
+    fn evaluate(c: *const CubicSpline, t: f64) Vector2I {
         const c0 = c.p0.toDouble();
         const c1 = (c.p1.sub(c.p0)).scale(3).toDouble();
         const c2 = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(3).toDouble();
@@ -138,7 +138,7 @@ pub const CubicSpline = struct {
         return p.round();
     }
 
-    fn cut(c: *CubicSpline, t: f64) struct { c1: CubicSpline, c2: CubicSpline } {
+    fn cut(c: *const CubicSpline, t: f64) struct { c1: CubicSpline, c2: CubicSpline } {
         //compute first curve
         const temp1: Vector2B = c.p0.toDouble().scale(1 - t).add(c.p1.scale(t));
         const cutAt = evaluate(t);
@@ -166,7 +166,7 @@ pub const CubicSpline = struct {
         };
     }
 
-    fn Reduce(c: *CubicSpline) struct { c1: QuadSpline, c2: QuadSpline } {
+    fn Reduce(c: *const CubicSpline) struct { c1: QuadSpline, c2: QuadSpline } {
         const r = c.p0.add(c.p1.scale(3)).toFloat().scale(1.0 / 4.0);
         const s = c.p2.scale(3).add(c.p3).toFloat().scale(1.0 / 4.0);
         const t = r.add(s).scale(1.0 / 2.0).round();
