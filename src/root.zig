@@ -2,10 +2,6 @@ const std = @import("std");
 pub const Line = @import("line.zig").Line;
 pub const CubicSpline = @import("cubic.zig").CubicSpline;
 
-fn div(a: i32, b: i32) f64 {
-    return @as(f64, @floatFromInt(a)) / @as(f64, @floatFromInt(b));
-}
-
 pub const Vector2I = struct {
     x: i32,
     y: i32,

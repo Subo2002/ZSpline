@@ -3,7 +3,10 @@ const Vector2 = @import("root.zig").Vector2;
 const Vector2B = @import("root.zig").Vector2B;
 const std = @import("std");
 const QuadSpline = @import("root.zig").QuadSpline;
-const div = @import("root.zig").div;
+
+fn div(a: i32, b: i32) f64 {
+    return @as(f64, @floatFromInt(a)) / @as(f64, @floatFromInt(b));
+}
 
 pub const CubicSpline = struct {
     p0: Vector2I,
