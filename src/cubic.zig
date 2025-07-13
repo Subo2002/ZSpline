@@ -11,8 +11,11 @@ pub const CubicSpline = struct {
     p3: Vector2I,
 
     pub fn draw(c: *const CubicSpline, out_buffer: []Vector2I) []Vector2I {
-        var monotoneParts: []CubicSpline = ([1]CubicSpline){CubicSpline{
-            .{ .p0 = .zero, .p1 = .zero, .p2 = .zero, .p3 = .zero },
+        var monotoneParts: []CubicSpline = [1]CubicSpline{.{
+            .p0 = .zero,
+            .p1 = .zero,
+            .p2 = .zero,
+            .p3 = .zero,
         }} ** 5;
         monotoneParts = c.cutToMontone(monotoneParts);
 
