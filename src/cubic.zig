@@ -67,9 +67,9 @@ pub const CubicSpline = struct {
             noPoints += 1;
         } else if (discY > 0) {
             const sqrtY = std.math.sqrt(@as(f64, @floatFromInt(discY)));
-            points[noPoints] = (@as(f64, @floatCast(-c1.y)) + sqrtY) / @as(f64, @floatCast(2 * c2.y));
+            points[noPoints] = (@as(f64, @floatFromInt(-c1.y)) + sqrtY) / @as(f64, @floatFromInt(2 * c2.y));
             noPoints += 1;
-            points[noPoints] = (@as(f64, @floatCast(-c1.y)) - sqrtY) / @as(f64, @floatCast(2 * c2.y));
+            points[noPoints] = (@as(f64, @floatFromInt(-c1.y)) - sqrtY) / @as(f64, @floatFromInt(2 * c2.y));
             noPoints += 1;
         }
 

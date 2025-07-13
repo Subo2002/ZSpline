@@ -315,11 +315,11 @@ pub const QuadSpline = struct {
 
         const d = p.sub(q);
 
-        const c20: u32 = a.Y * a.Y;
-        const c11: u32 = -2 * a.X * a.Y;
-        const c02: u32 = a.X * a.X;
-        const c10: u32 = 2 * d.Y * c;
-        const c01: u32 = -2 * d.X * c;
+        const c20: u32 = a.y * a.y;
+        const c11: u32 = -2 * a.x * a.y;
+        const c02: u32 = a.x * a.x;
+        const c10: u32 = 2 * d.y * c;
+        const c01: u32 = -2 * d.x * c;
         const c00: u32 = c * c;
         _ = c00;
 
