@@ -22,13 +22,13 @@ pub const CubicSpline = struct {
 
         var curves: struct { c1: QuadSpline, c2: QuadSpline } = undefined;
         var noPoints: u16 = 0;
-        for (0..monotoneParts.Length) |i| {
+        for (0..monotoneParts.len) |i| {
             curves = monotoneParts[i].Reduce();
-            noPoints += curves.c1.DrawMonotone(out_buffer[noPoints..]).Length;
-            noPoints += curves.c2.DrawMonotone(out_buffer[noPoints..]).Length;
+            noPoints += curves.c1.DrawMonotone(out_buffer[noPoints..]).len;
+            noPoints += curves.c2.DrawMonotone(out_buffer[noPoints..]).len;
         }
 
-        noPoints = if (noPoints > out_buffer.Length) out_buffer.len else noPoints;
+        noPoints = if (noPoints > out_buffer.len) out_buffer.len else noPoints;
         return out_buffer[0..noPoints];
     }
 
@@ -46,13 +46,13 @@ pub const CubicSpline = struct {
         //find vertical turning points
         const discX: i64 = c1.x * @as(i64, @intCast(c1.x)) - 4 * c0.x * @as(i64, @intCast(c2.x));
         if (discX < 0) {} else if (discX == 0) {
-            points[noPoints] = -c1.x / (2 * c2.x);
+            points[noPoints] = @divExact(-c1.x, 2 * c2.x);
             noPoints += 1;
         } else if (discX > 0) {
             const sqrtX: f64 = std.math.sqrt(discX);
-            points[noPoints] = (-c1.x + sqrtX) / (2 * c2.x);
+            points[noPoints] = @divExact(-c1.x + sqrtX, 2 * c2.x);
             noPoints += 1;
-            points[noPoints] = (-c1.X - sqrtX) / (2 * c2.x);
+            points[noPoints] = @divExact(-c1.X - sqrtX, 2 * c2.x);
             noPoints += 1;
         }
 
@@ -63,9 +63,9 @@ pub const CubicSpline = struct {
             noPoints += 1;
         } else if (discY > 0) {
             const sqrtY = std.math.sqrt(discY);
-            points[noPoints] = (-c1.y + sqrtY) / (2 * c2.y);
+            points[noPoints] = @divExact(-c1.y + sqrtY, 2 * c2.y);
             noPoints += 1;
-            points[noPoints] = (-c1.y - sqrtY) / (2 * c2.y);
+            points[noPoints] = @divExact(-c1.y - sqrtY, 2 * c2.y);
             noPoints += 1;
         }
 
