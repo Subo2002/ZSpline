@@ -284,34 +284,36 @@ pub const QuadSpline = struct {
     //public to be accessible for cubic impl.
     pub fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
         //translate to simplify
-        var p = c.p0 - c.p1;
-        var q = c.p2 - c.p1;
+        var p = c.p0.sub(c.p1);
+        var q = c.p2.sub(c.p1);
 
         //find orientation
         const s: Vector2I = .{
-            .x = if ((q - p).X >= 0) 1 else -1,
-            .y = if ((q - p).Y <= 0) 1 else -1,
+            .x = if ((q.sub(p)).x >= 0) 1 else -1,
+            .y = if ((q.sub(p)).y <= 0) 1 else -1,
         };
 
         //move it, move it
-        p *= s;
-        q *= s;
+        p = p.mult(s);
+        q = q.mult(s);
 
-        var cur = p.X * q.Y - p.Y * q.X;
+        var cur = p.x * q.y - p.y * q.x;
 
         //negate curvature
         if (cur > 0) {
-            const temp = -p;
-            p = -q;
+            const temp = p.scale(-1);
+            p = q.scale(-1);
             q = temp;
 
             temp = c.p0;
+
+            cur = p.x * q.y - p.y * q.x;
         }
 
         //some helpful mid-terms
-        const a = p + q;
-        cur = p.X * q.Y - p.Y * q.X; //curvature
-        const d = p - q;
+        const a = p.add(q);
+
+        const d = p.sub(q);
 
         const c20: u32 = a.Y * a.Y;
         const c11: u32 = -2 * a.X * a.Y;
@@ -321,7 +323,7 @@ pub const QuadSpline = struct {
         const c00: u32 = c * c;
         _ = c00;
 
-        if (!((q - p)[0] >= 0 and (q - p)[1] <= 0))
+        if (!((q.sub(p)).x >= 0 and (q.sub(p)).y <= 0))
             std.debug.print("FAIL");
 
         //begin with longer part
