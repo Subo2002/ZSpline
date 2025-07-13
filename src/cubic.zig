@@ -3,6 +3,7 @@ const Vector2 = @import("root.zig").Vector2;
 const Vector2B = @import("root.zig").Vector2B;
 const std = @import("std");
 const QuadSpline = @import("root.zig").QuadSpline;
+const div = @import("root.zig").div;
 
 pub const CubicSpline = struct {
     p0: Vector2I,
@@ -20,12 +21,12 @@ pub const CubicSpline = struct {
         var monotoneParts: []CubicSpline = monotone_parts_buffer[0..];
         monotoneParts = c.cutToMontone(monotoneParts);
 
-        var curves: struct { c1: QuadSpline, c2: QuadSpline } = undefined;
+        var curves: [2]QuadSpline = undefined;
         var noPoints: u16 = 0;
         for (0..monotoneParts.len) |i| {
-            curves = monotoneParts[i].Reduce();
-            noPoints += curves.c1.DrawMonotone(out_buffer[noPoints..]).len;
-            noPoints += curves.c2.DrawMonotone(out_buffer[noPoints..]).len;
+            curves = monotoneParts[i].reduce();
+            noPoints += curves[0].DrawMonotone(out_buffer[noPoints..]).len;
+            noPoints += curves[1].DrawMonotone(out_buffer[noPoints..]).len;
         }
 
         noPoints = if (noPoints > out_buffer.len) out_buffer.len else noPoints;
@@ -46,26 +47,26 @@ pub const CubicSpline = struct {
         //find vertical turning points
         const discX: i64 = c1.x * @as(i64, @intCast(c1.x)) - 4 * c0.x * @as(i64, @intCast(c2.x));
         if (discX < 0) {} else if (discX == 0) {
-            points[noPoints] = @divExact(-c1.x, 2 * c2.x);
+            points[noPoints] = div(-c1.x, 2 * c2.x);
             noPoints += 1;
         } else if (discX > 0) {
-            const sqrtX: f64 = std.math.sqrt(discX);
-            points[noPoints] = @divExact(-c1.x + sqrtX, 2 * c2.x);
+            const sqrtX: f64 = std.math.sqrt(@as(f64, @floatFromInt(discX)));
+            points[noPoints] = div(-c1.x + sqrtX, 2 * c2.x);
             noPoints += 1;
-            points[noPoints] = @divExact(-c1.X - sqrtX, 2 * c2.x);
+            points[noPoints] = div(-c1.X - sqrtX, 2 * c2.x);
             noPoints += 1;
         }
 
         //find horizontal turning points
         const discY: i64 = c1.y * @as(i64, @intCast(c1.y)) - 4 * c0.y * @as(i64, @intCast(c2.y));
         if (discY < 0) {} else if (discY == 0) {
-            points[noPoints] = -c1.y / (2 * c2.y);
+            points[noPoints] = div(-c1.y, 2 * c2.y);
             noPoints += 1;
         } else if (discY > 0) {
-            const sqrtY = std.math.sqrt(discY);
-            points[noPoints] = @divExact(-c1.y + sqrtY, 2 * c2.y);
+            const sqrtY = std.math.sqrt(@as(f64, @floatFromInt(discY)));
+            points[noPoints] = div(-c1.y + sqrtY, 2 * c2.y);
             noPoints += 1;
-            points[noPoints] = @divExact(-c1.y - sqrtY, 2 * c2.y);
+            points[noPoints] = div(-c1.y - sqrtY, 2 * c2.y);
             noPoints += 1;
         }
 
@@ -108,13 +109,13 @@ pub const CubicSpline = struct {
         var t: i64 = undefined;
         var curve: CubicSpline = c;
         var count = 0;
-        var pieces: struct { c1: CubicSpline, c2: CubicSpline } = undefined;
+        var pieces: [2]CubicSpline = undefined;
 
         for (0..noPoints) |i| {
             t = points[i];
             pieces = curve.cut(t);
-            out_buffer[count] = pieces.c1;
-            curve = pieces.c2;
+            out_buffer[count] = pieces[0];
+            curve = pieces[1];
             count += 1;
             if (i < noPoints - 1) {
                 for ((i + 1)..noPoints) |k| {
@@ -142,7 +143,7 @@ pub const CubicSpline = struct {
         return p.round();
     }
 
-    fn cut(c: *const CubicSpline, t: f64) struct { c1: CubicSpline, c2: CubicSpline } {
+    fn cut(c: *const CubicSpline, t: f64) [2]CubicSpline {
         //compute first curve
         const temp1: Vector2B = c.p0.toDouble().scale(1 - t).add(c.p1.scale(t));
         const cutAt = evaluate(t);
@@ -164,19 +165,16 @@ pub const CubicSpline = struct {
             c.p3,
         };
 
-        return .{
-            .c1 = c1,
-            .c2 = c2,
-        };
+        return .{ c1, c2 };
     }
 
-    fn Reduce(c: *const CubicSpline) struct { c1: QuadSpline, c2: QuadSpline } {
+    fn reduce(c: *const CubicSpline) [2]QuadSpline {
         const r = c.p0.add(c.p1.scale(3)).toFloat().scale(1.0 / 4.0);
         const s = c.p2.scale(3).add(c.p3).toFloat().scale(1.0 / 4.0);
         const t = r.add(s).scale(1.0 / 2.0).round();
         return .{
-            .{ c.p0, r.round(), t },
-            .{ t, s.round(), c.p3 },
+            .init(c.p0, r.round(), t),
+            .init(t, s.round(), c.p3),
         };
     }
 };
