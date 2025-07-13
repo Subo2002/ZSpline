@@ -21,7 +21,7 @@ pub const CubicSpline = struct {
         monotoneParts = c.cutToMontone(monotoneParts);
 
         var curves: struct { c1: QuadSpline, c2: QuadSpline } = undefined;
-        var noPoints = 0;
+        var noPoints: u16 = 0;
         for (0..monotoneParts.Length) |i| {
             curves = monotoneParts[i].Reduce();
             noPoints += curves.c1.DrawMonotone(out_buffer[noPoints..]).Length;
@@ -44,28 +44,28 @@ pub const CubicSpline = struct {
         var points: [4]f64 = .{ 0, 0, 0, 0 };
 
         //find vertical turning points
-        const discX: i64 = c1.X * @as(i64, @intCast(c1.X)) - 4 * c0.X * @as(i64, @intCast(c2.X));
+        const discX: i64 = c1.x * @as(i64, @intCast(c1.x)) - 4 * c0.x * @as(i64, @intCast(c2.x));
         if (discX < 0) {} else if (discX == 0) {
-            points[noPoints] = -c1.X / (2 * c2.X);
+            points[noPoints] = -c1.x / (2 * c2.x);
             noPoints += 1;
         } else if (discX > 0) {
             const sqrtX: f64 = std.math.sqrt(discX);
-            points[noPoints] = (-c1.X + sqrtX) / (2 * c2.X);
+            points[noPoints] = (-c1.x + sqrtX) / (2 * c2.x);
             noPoints += 1;
-            points[noPoints] = (-c1.X - sqrtX) / (2 * c2.X);
+            points[noPoints] = (-c1.X - sqrtX) / (2 * c2.x);
             noPoints += 1;
         }
 
         //find horizontal turning points
-        const discY: i64 = c1.Y * @as(i64, @intCast(c1.Y)) - 4 * c0.Y * @as(i64, @intCast(c2.Y));
+        const discY: i64 = c1.y * @as(i64, @intCast(c1.y)) - 4 * c0.y * @as(i64, @intCast(c2.y));
         if (discY < 0) {} else if (discY == 0) {
-            points[noPoints] = -c1.Y / (2 * c2.Y);
+            points[noPoints] = -c1.y / (2 * c2.y);
             noPoints += 1;
         } else if (discY > 0) {
             const sqrtY = std.math.sqrt(discY);
-            points[noPoints] = (-c1.Y + sqrtY) / (2 * c2.Y);
+            points[noPoints] = (-c1.y + sqrtY) / (2 * c2.y);
             noPoints += 1;
-            points[noPoints] = (-c1.Y - sqrtY) / (2 * c2.Y);
+            points[noPoints] = (-c1.y - sqrtY) / (2 * c2.y);
             noPoints += 1;
         }
 
