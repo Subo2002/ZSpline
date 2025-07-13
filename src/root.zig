@@ -1,6 +1,6 @@
 const std = @import("std");
-const Line = @import("line.zig").Line;
-const CubicSpline = @import("cubic.zig").CubicSpline;
+pub const Line = @import("line.zig").Line;
+pub const CubicSpline = @import("cubic.zig").CubicSpline;
 
 pub const Vector2I = struct {
     x: i32,
