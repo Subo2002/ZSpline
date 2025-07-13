@@ -301,7 +301,7 @@ pub const QuadSpline = struct {
 
         //negate curvature
         if (cur > 0) {
-            const temp = p.scale(-1);
+            var temp = p.scale(-1);
             p = q.scale(-1);
             q = temp;
 
