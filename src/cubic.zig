@@ -28,8 +28,8 @@ pub const CubicSpline = struct {
         var noPoints: u16 = 0;
         for (0..monotoneParts.len) |i| {
             curves = monotoneParts[i].reduce();
-            noPoints += curves[0].drawMonotone(out_buffer[noPoints..]).len;
-            noPoints += curves[1].drawMonotone(out_buffer[noPoints..]).len;
+            noPoints += @intCast(curves[0].drawMonotone(out_buffer[noPoints..]).len);
+            noPoints += @intCast(curves[1].drawMonotone(out_buffer[noPoints..]).len);
         }
 
         noPoints = if (noPoints > out_buffer.len) out_buffer.len else noPoints;
@@ -54,9 +54,9 @@ pub const CubicSpline = struct {
             noPoints += 1;
         } else if (discX > 0) {
             const sqrtX: f64 = std.math.sqrt(@as(f64, @floatFromInt(discX)));
-            points[noPoints] = div(-c1.x + sqrtX, 2 * c2.x);
+            points[noPoints] = (@as(f64, @floatCast(-c1.x)) + sqrtX) / @as(f64, @floatCast(2 * c2.x));
             noPoints += 1;
-            points[noPoints] = div(-c1.X - sqrtX, 2 * c2.x);
+            points[noPoints] = (@as(f64, @floatFromInt(-c1.X)) - sqrtX) / @as(f64, @floatFromInt(2 * c2.x));
             noPoints += 1;
         }
 
@@ -67,9 +67,9 @@ pub const CubicSpline = struct {
             noPoints += 1;
         } else if (discY > 0) {
             const sqrtY = std.math.sqrt(@as(f64, @floatFromInt(discY)));
-            points[noPoints] = div(-c1.y + sqrtY, 2 * c2.y);
+            points[noPoints] = (@as(f64, @floatCast(-c1.y)) + sqrtY) / @as(f64, @floatCast(2 * c2.y));
             noPoints += 1;
-            points[noPoints] = div(-c1.y - sqrtY, 2 * c2.y);
+            points[noPoints] = (@as(f64, @floatCast(-c1.y)) - sqrtY) / @as(f64, @floatCast(2 * c2.y));
             noPoints += 1;
         }
 
