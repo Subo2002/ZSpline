@@ -74,7 +74,7 @@ pub const CubicSpline = struct {
         }
 
         //remove points out of 0 to 1 range
-        var ptr = 0;
+        var ptr: u16 = 0;
         for (0..noPoints) |i| {
             if ((points[i] < 0 or points[i] > 1)) {
                 continue;
