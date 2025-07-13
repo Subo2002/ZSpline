@@ -281,7 +281,8 @@ pub const QuadSpline = struct {
         return p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t)).round();
     }
 
-    fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
+    //public to be accessible for cubic impl.
+    pub fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
         //translate to simplify
         var p = c.p0 - c.p1;
         var q = c.p2 - c.p1;
