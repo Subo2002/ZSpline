@@ -32,7 +32,7 @@ pub const CubicSpline = struct {
             noPoints += @intCast(curves[1].drawMonotone(out_buffer[noPoints..]).len);
         }
 
-        noPoints = if (noPoints > out_buffer.len) out_buffer.len else noPoints;
+        noPoints = @intCast(if (noPoints > out_buffer.len) out_buffer.len else noPoints);
         return out_buffer[0..noPoints];
     }
 
