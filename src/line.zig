@@ -12,10 +12,10 @@ pub const Line = struct {
 
         const sx: i32 = if (q.x > p.x) 1 else -1;
         const sy: i32 = if (q.y > p.y) 1 else -1;
-        const dx: u16 = -sy * (q.y - p.y);
-        const dy: u16 = sx * (q.x - p.x);
-        var e: u32 = dx + dy;
-        var e2: u32 = 0;
+        const dx: i32 = -sy * (q.y - p.y);
+        const dy: i32 = sx * (q.x - p.x);
+        var e: i32 = dx + dy;
+        var e2: i32 = 0;
         var r: Vector2I = p;
 
         while (true) {
