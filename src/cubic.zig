@@ -112,7 +112,7 @@ pub const CubicSpline = struct {
 
         //perform the cuts at the computed points
         var t: i64 = undefined;
-        var curve: CubicSpline = c;
+        var curve: CubicSpline = c.*;
         var count = 0;
         var pieces: [2]CubicSpline = undefined;
 

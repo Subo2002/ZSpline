@@ -10,8 +10,8 @@ pub const Line = struct {
         const p: Vector2I = c.p;
         const q: Vector2I = c.q;
 
-        const sx = if (q.x > p.x) 1 else -1;
-        const sy = if (q.y > p.y) 1 else -1;
+        const sx: i32 = if (q.x > p.x) 1 else -1;
+        const sy: i32 = if (q.y > p.y) 1 else -1;
         const dx: u16 = -sy * (q.y - p.y);
         const dy: u16 = sx * (q.x - p.x);
         var e: u32 = dx + dy;

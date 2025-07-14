@@ -348,15 +348,15 @@ pub const QuadSpline = struct {
 
         //1st degrree differences
         var dx: u64 =
-            2 * c20 * p.x +
+            @intCast(2 * c20 * p.x +
             c20 +
             c11 * p.y +
-            c10;
+            c10);
         var dy: u64 =
-            2 * (-1) * c02 * p.y +
+            @intCast(2 * (-1) * c02 * p.y +
             c02 +
             (-1) * c11 * p.x +
-            (-1) * c01;
+            (-1) * c01);
         var e: u64 = dx + dy + xy;
 
         var pos: Vector2I = c.p0;
