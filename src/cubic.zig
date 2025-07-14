@@ -97,10 +97,10 @@ pub const CubicSpline = struct {
         points = points[0..noPoints];
         var v: f64 = undefined;
         var j: usize = undefined;
-        for (0..points.Length - 1) |i| {
+        for (0..points.len - 1) |i| {
             v = points[i];
             j = i;
-            while (j < points.Length - 1 and v > points[j + 1]) {
+            while (j < points.len - 1 and v > points[j + 1]) {
                 points[j] = points[j + 1];
                 points[j + 1] = v;
                 j += 1;

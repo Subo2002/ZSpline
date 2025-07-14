@@ -338,7 +338,7 @@ pub const QuadSpline = struct {
         if (cur == 0) //straight line
         {
             const line: Line = .{ .p = c.p0, .q = c.p2 };
-            return line.ComputePixels(out_buffer);
+            return line.draw(out_buffer);
         }
 
         //2nd degree differences, hence CONSTANT
