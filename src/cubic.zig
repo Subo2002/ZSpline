@@ -38,6 +38,7 @@ pub const CubicSpline = struct {
 
     //buffer needs room for atleast 5 CubicSplines (4 possible turning points -> 4 cuts -> 5 pieces)
     fn cutToMontone(c: *const CubicSpline, out_buffer: []CubicSpline) []CubicSpline {
+        var buffer = out_buffer[0..];
         //compute turning points
         //coefficients of the derivative of Cubic Spline, but took out a factor of 3
         const c0: Vector2I = c.p0.add(c.p1).scale(-1);
@@ -88,8 +89,8 @@ pub const CubicSpline = struct {
 
         //no turning points case
         if (noPoints == 0) {
-            out_buffer[0] = c.*;
-            return out_buffer[0..1];
+            buffer[0] = c.*;
+            return buffer[0..1];
         }
         //so can assume noPoints >= 1
 
@@ -107,7 +108,7 @@ pub const CubicSpline = struct {
             }
         }
 
-        out_buffer = out_buffer[0..(noPoints + 1)];
+        buffer = buffer[0..(noPoints + 1)];
 
         //perform the cuts at the computed points
         var t: i64 = undefined;
@@ -118,7 +119,7 @@ pub const CubicSpline = struct {
         for (0..noPoints) |i| {
             t = points[i];
             pieces = curve.cut(t);
-            out_buffer[count] = pieces[0];
+            buffer[count] = pieces[0];
             curve = pieces[1];
             count += 1;
             if (i < noPoints - 1) {
@@ -126,11 +127,11 @@ pub const CubicSpline = struct {
                     points[k] = (points[k] - t) / (1 - t);
                 }
             } else {
-                out_buffer[noPoints] = curve;
+                buffer[noPoints] = curve;
             }
         }
 
-        return out_buffer;
+        return buffer;
     }
 
     fn evaluate(c: *const CubicSpline, t: f64) Vector2I {

@@ -342,20 +342,20 @@ pub const QuadSpline = struct {
         }
 
         //2nd degree differences, hence CONSTANT
-        const xx = 2 * c.c20;
-        const yy = 2 * c.c02;
-        const xy = c.c11;
+        const xx = 2 * c20;
+        const yy = 2 * c02;
+        const xy = c11;
 
         //1st degrree differences
         var dx: u64 =
-            2 * c20 * p.X +
+            2 * c20 * p.x +
             c20 +
-            c11 * p.Y +
+            c11 * p.y +
             c10;
         var dy: u64 =
-            2 * (-1) * c02 * p.Y +
+            2 * (-1) * c02 * p.y +
             c02 +
-            (-1) * c11 * p.X +
+            (-1) * c11 * p.x +
             (-1) * c01;
         var e: u64 = dx + dy + xy;
 
@@ -375,7 +375,7 @@ pub const QuadSpline = struct {
             xStep = 2 * e > dx;
             if (xStep) //x step
             {
-                pos.X += s.x;
+                pos.x += s.x;
                 dy += xy;
                 dx += xx;
                 e += dx + xy;
@@ -383,7 +383,7 @@ pub const QuadSpline = struct {
 
             if (yStep) //y step
             {
-                pos.Y += s.y;
+                pos.y += s.y;
                 dx += xy;
                 dy += yy;
                 e += dy + xy;
