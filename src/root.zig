@@ -324,7 +324,7 @@ pub const QuadSpline = struct {
         _ = c00;
 
         if (!((q.sub(p)).x >= 0 and (q.sub(p)).y <= 0))
-            std.debug.print("FAIL");
+            std.debug.print("FAIL", .{});
 
         //begin with longer part
         //if (q.X * q.X + q.Y * q.Y > p.X * p.X + p.Y * p.Y)

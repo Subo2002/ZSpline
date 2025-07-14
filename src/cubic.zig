@@ -45,7 +45,8 @@ pub const CubicSpline = struct {
         const c2: Vector2I = c.p0.scale(-1).add(c.p1.scale(3)).add(c.p2.scale(-3)).add(c.p3);
 
         var noPoints: u16 = 0;
-        var points: [4]f64 = .{ 0, 0, 0, 0 };
+        var points_buffer: [4]f64 = .{ 0, 0, 0, 0 };
+        var points: []f64 = points_buffer[0..];
 
         //find vertical turning points
         const discX: i64 = c1.x * @as(i64, @intCast(c1.x)) - 4 * c0.x * @as(i64, @intCast(c2.x));
