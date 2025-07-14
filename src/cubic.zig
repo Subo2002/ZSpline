@@ -87,7 +87,7 @@ pub const CubicSpline = struct {
 
         //no turning points case
         if (noPoints == 0) {
-            out_buffer[0] = c;
+            out_buffer[0] = c.*;
             return out_buffer[0..1];
         }
         //so can assume noPoints >= 1
