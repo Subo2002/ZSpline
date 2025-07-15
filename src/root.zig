@@ -218,7 +218,7 @@ pub const QuadSpline = struct {
 
                 //find y-intersections with axes of the spline
                 const t3: f32 = (_p4.x - p0.x) / (p1.x - p0.x);
-                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3));
+                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
                 const t5: f32 = (_p4.x - p2.x) / (p1.x - p2.x);
                 const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
@@ -295,9 +295,9 @@ pub const QuadSpline = struct {
     }
 
     fn evaluate(c: *const QuadSpline, t: f32) Vector2I {
-        const p0: Vector2 = c.p0;
-        const p1: Vector2 = c.p1;
-        const p2: Vector2 = c.p2;
+        const p0: Vector2 = c.p0.toFloat();
+        const p1: Vector2 = c.p1.toFloat();
+        const p2: Vector2 = c.p2.toFloat();
 
         return p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t)).round();
     }
