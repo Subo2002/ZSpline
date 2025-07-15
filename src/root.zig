@@ -162,7 +162,7 @@ pub const QuadSpline = struct {
         var curves: []QuadSpline = curve_buffer[0..];
         curves = c.cutToMonotone(curves);
         switch (curves.len) {
-            1 => return curves[0].DrawMonotone(out_buffer),
+            1 => return curves[0].drawMonotone(out_buffer),
             2 => {
                 const c1 = curves[0].drawMonotone(out_buffer);
                 const c2 = curves[1].drawMonotone(out_buffer[c1.len..]);
@@ -187,12 +187,12 @@ pub const QuadSpline = struct {
             y_then_x: bool,
         };
 
-        const x_valid = t[0] < 0 or t[0] > 1;
-        const y_valid = t[1] < 0 or t[1] > 1;
+        const x_valid = t.x < 0 or t.x > 1;
+        const y_valid = t.y < 0 or t.y > 1;
         const _state: State = .{
             .x_valid = x_valid,
             .y_valid = y_valid,
-            .y_then_x = x_valid and y_valid and t[1] < t[0],
+            .y_then_x = x_valid and y_valid and t.y < t.x,
         };
         const state_enum = enum(u4) {
             null,
@@ -213,13 +213,13 @@ pub const QuadSpline = struct {
                 const p2: Vector2 = c.p2;
 
                 //find the point to cut at
-                const p4: Vector2I = c.evaluate(t[0]);
+                const p4: Vector2I = c.evaluate(t.x);
 
                 //find y-intersections with axes of the spline
-                const t3: f32 = (p4.X - p0.X) / (p1.X - p0.X);
+                const t3: f32 = (p4.x - p0.x) / (p1.x - p0.x);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3));
 
-                const t5: f32 = (p4.X - p2.X) / (p1.X - p2.X);
+                const t5: f32 = (p4.x - p2.x) / (p1.x - p2.x);
                 const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
@@ -233,13 +233,13 @@ pub const QuadSpline = struct {
                 const p2: Vector2 = c.p2;
 
                 //find the point to cut at
-                const p4: Vector2I = c.evaluate(t[1]);
+                const p4: Vector2I = c.evaluate(t.y);
 
                 //find y-intersections with axes of the spline
-                const t3: f32 = (p4.Y - p0.Y) / (p1.Y - p0.Y);
+                const t3: f32 = (p4.y - p0.y) / (p1.y - p0.y);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
-                const t5: f32 = (p4.Y - p2.Y) / (p1.Y - p2.Y);
+                const t5: f32 = (p4.y - p2.y) / (p1.y - p2.y);
                 const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
@@ -252,17 +252,17 @@ pub const QuadSpline = struct {
                 const p1: Vector2 = c.p1;
                 const p2: Vector2 = c.p2;
 
-                const p4: Vector2I = c.evaluate(t[1]);
-                const t3: f32 = (p4.Y - p0.Y) / (p1.Y - p0.Y);
+                const p4: Vector2I = c.evaluate(t.y);
+                const t3: f32 = (p4.y - p0.y) / (p1.y - p0.y);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
 
-                const p6: Vector2I = c.evaluate(t[0]);
-                const t7: f32 = (p6.X - p2.X) / (p1.X - p2.X);
+                const p6: Vector2I = c.evaluate(t.x);
+                const t7: f32 = (p6.x - p2.x) / (p1.x - p2.x);
                 const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = p2 };
 
-                const p5: Vector2I = .{ p6[0], p4[1] };
+                const p5: Vector2I = .{ p6.x, p4.y };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
@@ -272,17 +272,17 @@ pub const QuadSpline = struct {
                 const p1: Vector2 = c.p1;
                 const p2: Vector2 = c.p2;
 
-                const p4: Vector2I = c.evaluate(t[0]);
-                const t3: f32 = (p4.X - p0.X) / (p1.X - p0.X);
+                const p4: Vector2I = c.evaluate(t.x);
+                const t3: f32 = (p4.x - p0.x) / (p1.x - p0.x);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
 
-                const p6: Vector2I = c.evaluate(t[1]);
-                const t7: f32 = (p6.Y - p2.Y) / (p1.Y - p2.Y);
+                const p6: Vector2I = c.evaluate(t.y);
+                const t7: f32 = (p6.y - p2.y) / (p1.y - p2.y);
                 const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = p2 };
 
-                const p5: Vector2I = .{ p4[0], p6[1] };
+                const p5: Vector2I = .{ p4.x, p6.y };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
