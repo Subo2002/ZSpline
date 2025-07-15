@@ -407,7 +407,7 @@ pub const QuadSpline = struct {
         if (!pos.eql(c.p2)) {
             const line: Line = .{ .p = pos, .q = c.p2 };
             const linePixels: []Vector2I = line.draw(out_buffer[no..]);
-            no += linePixels.len;
+            no += @intCast(linePixels.len);
         }
 
         return out_buffer[0..no];
