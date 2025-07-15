@@ -204,7 +204,7 @@ pub const QuadSpline = struct {
         const state: state_enum = @enumFromInt(@as(u3, @bitCast(_state)));
         switch (state) {
             .null => {
-                out_buffer[0] = c;
+                out_buffer[0] = c.*;
                 return out_buffer[0..1];
             },
             .x_valid => {
