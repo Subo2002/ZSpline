@@ -111,7 +111,7 @@ pub const CubicSpline = struct {
         buffer = buffer[0..(noPoints + 1)];
 
         //perform the cuts at the computed points
-        var t: i64 = undefined;
+        var t: f64 = undefined;
         var curve: CubicSpline = c.*;
         var count: u16 = 0;
         var pieces: [2]CubicSpline = undefined;
