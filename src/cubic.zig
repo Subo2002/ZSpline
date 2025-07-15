@@ -142,8 +142,8 @@ pub const CubicSpline = struct {
         const tt = t * t;
         const ttt = tt * t;
         const p: Vector2 = (Vector2B.init(
-            c3.X * ttt + c2.X * tt + c1.X * t + c0.X,
-            c3.Y * ttt + c2.Y * tt + c1.Y * t + c0.Y,
+            c3.x * ttt + c2.x * tt + c1.x * t + c0.x,
+            c3.y * ttt + c2.y * tt + c1.y * t + c0.y,
         )).trunc();
         return p.round();
     }
@@ -161,7 +161,7 @@ pub const CubicSpline = struct {
         };
 
         //compute second curve
-        const temp2 = c.p2.toDouble().scale(1 - t).add(c.p3.scale(t));
+        const temp2 = c.p2.toDouble().scale(1 - t).add(c.p3.toDouble().scale(t));
         const c2: CubicSpline = .{
             cutAt,
             c.p1.toDouble().scale(1 - t).add(c.p2.toDouble().scale(t)).scale(1 - t).add(temp2.scale(t))
