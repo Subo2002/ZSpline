@@ -360,7 +360,7 @@ pub const QuadSpline = struct {
         var e: i64 = dx + dy + xy;
 
         var pos: Vector2I = c.p0;
-        var no = 0;
+        var no: u16 = 0;
         var yStep: bool = undefined;
         var xStep: bool = undefined;
 
