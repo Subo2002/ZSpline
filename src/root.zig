@@ -214,12 +214,13 @@ pub const QuadSpline = struct {
 
                 //find the point to cut at
                 const p4: Vector2I = c.evaluate(t.x);
+                const _p4: Vector2 = p4.toFloat();
 
                 //find y-intersections with axes of the spline
-                const t3: f32 = (p4.x - p0.x) / (p1.x - p0.x);
+                const t3: f32 = (_p4.x - p0.x) / (p1.x - p0.x);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3));
 
-                const t5: f32 = (p4.x - p2.x) / (p1.x - p2.x);
+                const t5: f32 = (_p4.x - p2.x) / (p1.x - p2.x);
                 const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
@@ -234,12 +235,13 @@ pub const QuadSpline = struct {
 
                 //find the point to cut at
                 const p4: Vector2I = c.evaluate(t.y);
+                const _p4: Vector2 = p4.toFloat();
 
                 //find y-intersections with axes of the spline
-                const t3: f32 = (p4.y - p0.y) / (p1.y - p0.y);
+                const t3: f32 = (_p4.y - p0.y) / (p1.y - p0.y);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
-                const t5: f32 = (p4.y - p2.y) / (p1.y - p2.y);
+                const t5: f32 = (_p4.y - p2.y) / (p1.y - p2.y);
                 const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
@@ -253,12 +255,14 @@ pub const QuadSpline = struct {
                 const p2: Vector2 = c.p2.toFloat();
 
                 const p4: Vector2I = c.evaluate(t.y);
-                const t3: f32 = (p4.y - p0.y) / (p1.y - p0.y);
+                const _p4: Vector2 = p4.toFloat();
+                const t3: f32 = (_p4.y - p0.y) / (p1.y - p0.y);
                 const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = p0, .p1 = p3, .p2 = p4 };
 
                 const p6: Vector2I = c.evaluate(t.x);
-                const t7: f32 = (p6.x - p2.x) / (p1.x - p2.x);
+                const _p6: Vector2 = p6.toFloat();
+                const t7: f32 = (_p6.x - p2.x) / (p1.x - p2.x);
                 const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = p2 };
 
