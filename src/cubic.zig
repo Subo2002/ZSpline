@@ -41,7 +41,7 @@ pub const CubicSpline = struct {
         var buffer = out_buffer[0..];
         //compute turning points
         //coefficients of the derivative of Cubic Spline, but took out a factor of 3
-        const c0: Vector2I = c.p0.add(c.p1).scale(-1);
+        const c0: Vector2I = c.p1.sub(c.p0);
         const c1: Vector2I = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(2);
         const c2: Vector2I = c.p0.scale(-1).add(c.p1.scale(3)).add(c.p2.scale(-3)).add(c.p3);
 
