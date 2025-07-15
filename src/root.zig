@@ -194,14 +194,14 @@ pub const QuadSpline = struct {
             .y_valid = y_valid,
             .y_then_x = x_valid and y_valid and t.y < t.x,
         };
-        const state_enum = enum(u4) {
+        const state_enum = enum(u3) {
             null,
             x_valid,
             y_valid,
             x_then_y,
             y_then_x,
         };
-        const state: state_enum = @enumFromInt(@as(u4, @bitCast(_state)));
+        const state: state_enum = @enumFromInt(@as(u3, @bitCast(_state)));
         switch (state) {
             .null => {
                 out_buffer[0] = c;
