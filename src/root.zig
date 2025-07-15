@@ -39,6 +39,10 @@ pub const Vector2I = struct {
     pub fn toDouble(a: Vector2I) Vector2B {
         return .{ .x = @floatFromInt(a.x), .y = @floatFromInt(a.y) };
     }
+
+    pub fn eql(a: Vector2I, b: Vector2I) bool {
+        return a.x == b.x and a.y == b.y;
+    }
 };
 
 pub const Vector2 = struct {
@@ -82,6 +86,10 @@ pub const Vector2 = struct {
         if (a.y - @as(f32, @floatFromInt(b.y)) >= 0.5)
             b.y += 1;
         return b;
+    }
+
+    pub fn eql(a: Vector2, b: Vector2) bool {
+        return a.x == b.x and a.y == b.y;
     }
 };
 
@@ -129,6 +137,10 @@ pub const Vector2B = struct {
         if (a.y - @as(f64, @floatFromInt(b.y)) >= 0.5)
             b.y += 1;
         return b;
+    }
+
+    pub fn eql(a: Vector2B, b: Vector2B) bool {
+        return a.x == b.x and a.y == b.y;
     }
 };
 
@@ -368,7 +380,7 @@ pub const QuadSpline = struct {
         {
             out_buffer[no] = pos;
             no += 1;
-            if (pos == c.p2)
+            if (pos.eql(c.p2))
                 break;
 
             yStep = 2 * e < dy;

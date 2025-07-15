@@ -151,7 +151,7 @@ pub const CubicSpline = struct {
     fn cut(c: *const CubicSpline, t: f64) [2]CubicSpline {
         //compute first curve
         const temp1: Vector2B = c.p0.toDouble().scale(1 - t).add(c.p1.toDouble().scale(t));
-        const cutAt = evaluate(t);
+        const cutAt = c.evaluate(t);
         const c1: CubicSpline = .{
             .p0 = c.p0,
             .p1 = temp1.trunc().round(),
