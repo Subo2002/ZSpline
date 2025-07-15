@@ -163,11 +163,11 @@ pub const CubicSpline = struct {
         //compute second curve
         const temp2 = c.p2.toDouble().scale(1 - t).add(c.p3.toDouble().scale(t));
         const c2: CubicSpline = .{
-            cutAt,
-            c.p1.toDouble().scale(1 - t).add(c.p2.toDouble().scale(t)).scale(1 - t).add(temp2.scale(t))
+            .p0 = cutAt,
+            .p1 = c.p1.toDouble().scale(1 - t).add(c.p2.toDouble().scale(t)).scale(1 - t).add(temp2.scale(t))
                 .trunc().round(),
-            temp2.trunc().round(),
-            c.p3,
+            .p2 = temp2.trunc().round(),
+            .p3 = c.p3,
         };
 
         return .{ c1, c2 };

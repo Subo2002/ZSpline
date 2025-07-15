@@ -405,7 +405,7 @@ pub const QuadSpline = struct {
         //algorithm failed so is too close to being a straight line
         //do rest with s straight line
         if (!pos.eql(c.p2)) {
-            const line: Line = .{ .p0 = pos, .p1 = c.p2 };
+            const line: Line = .{ .p = pos, .q = c.p2 };
             const linePixels: []Vector2I = line.draw(out_buffer[no..]);
             no += linePixels.len;
         }
