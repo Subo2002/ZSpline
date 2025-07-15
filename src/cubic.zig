@@ -37,7 +37,7 @@ pub const CubicSpline = struct {
     }
 
     //buffer needs room for atleast 5 CubicSplines (4 possible turning points -> 4 cuts -> 5 pieces)
-    fn cutToMontone(c: *const CubicSpline, out_buffer: []CubicSpline) []CubicSpline {
+    pub fn cutToMontone(c: *const CubicSpline, out_buffer: []CubicSpline) []CubicSpline {
         var buffer = out_buffer[0..];
         //compute turning points
         //coefficients of the derivative of Cubic Spline, but took out a factor of 3
