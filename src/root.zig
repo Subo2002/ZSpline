@@ -208,9 +208,9 @@ pub const QuadSpline = struct {
                 return out_buffer[0..1];
             },
             .x_valid => {
-                const p0: Vector2 = c.p0;
-                const p1: Vector2 = c.p1;
-                const p2: Vector2 = c.p2;
+                const p0: Vector2 = c.p0.toFloat();
+                const p1: Vector2 = c.p1.toFloat();
+                const p2: Vector2 = c.p2.toFloat();
 
                 //find the point to cut at
                 const p4: Vector2I = c.evaluate(t.x);
@@ -228,9 +228,9 @@ pub const QuadSpline = struct {
                 return out_buffer[0..2];
             },
             .y_valid => {
-                const p0: Vector2 = c.p0;
-                const p1: Vector2 = c.p1;
-                const p2: Vector2 = c.p2;
+                const p0: Vector2 = c.p0.toFloat();
+                const p1: Vector2 = c.p1.toFloat();
+                const p2: Vector2 = c.p2.toFloat();
 
                 //find the point to cut at
                 const p4: Vector2I = c.evaluate(t.y);
@@ -248,9 +248,9 @@ pub const QuadSpline = struct {
                 return out_buffer[0..2];
             },
             .x_then_y => {
-                const p0: Vector2 = c.p0;
-                const p1: Vector2 = c.p1;
-                const p2: Vector2 = c.p2;
+                const p0: Vector2 = c.p0.toFloat();
+                const p1: Vector2 = c.p1.toFloat();
+                const p2: Vector2 = c.p2.toFloat();
 
                 const p4: Vector2I = c.evaluate(t.y);
                 const t3: f32 = (p4.y - p0.y) / (p1.y - p0.y);
@@ -268,9 +268,9 @@ pub const QuadSpline = struct {
                 return out_buffer[0..3];
             },
             .y_then_x => {
-                const p0: Vector2 = c.p0;
-                const p1: Vector2 = c.p1;
-                const p2: Vector2 = c.p2;
+                const p0: Vector2 = c.p0.toFloat();
+                const p1: Vector2 = c.p1.toFloat();
+                const p2: Vector2 = c.p2.toFloat();
 
                 const p4: Vector2I = c.evaluate(t.x);
                 const t3: f32 = (p4.x - p0.x) / (p1.x - p0.x);
