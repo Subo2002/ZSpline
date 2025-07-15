@@ -154,7 +154,12 @@ pub const QuadSpline = struct {
     };
 
     pub fn draw(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
-        const curves: []QuadSpline = ([1]QuadSpline{.{ .p0 = .zero, .p1 = .zero, .p2 = .zero }} ** 3)[0..3];
+        var curve_buffer = [1]QuadSpline{.{
+            .p0 = .zero,
+            .p1 = .zero,
+            .p2 = .zero,
+        }} ** 3;
+        var curves: []QuadSpline = curve_buffer[0..];
         curves = c.cutToMonotone(curves);
         switch (curves.len) {
             1 => return curves[0].DrawMonotone(out_buffer),
