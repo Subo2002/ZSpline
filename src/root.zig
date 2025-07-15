@@ -311,13 +311,17 @@ pub const QuadSpline = struct {
 
         var cur = p.x * q.y - p.y * q.x;
 
+        if (cur == 0) //straight line
+        {
+            const line: Line = .{ .p = c.p0, .q = c.p2 };
+            return line.draw(out_buffer);
+        }
+
         //negate curvature
         if (cur > 0) {
-            var temp = p.scale(-1);
+            const temp = p.scale(-1);
             p = q.scale(-1);
             q = temp;
-
-            temp = c.p0;
 
             cur = p.x * q.y - p.y * q.x;
         }
@@ -347,12 +351,6 @@ pub const QuadSpline = struct {
         //    b = -b;
         //}
 
-        if (cur == 0) //straight line
-        {
-            const line: Line = .{ .p = c.p0, .q = c.p2 };
-            return line.draw(out_buffer);
-        }
-
         //2nd degree differences, hence CONSTANT
         const xx = 2 * c20;
         const yy = 2 * c02;
@@ -376,6 +374,11 @@ pub const QuadSpline = struct {
         var yStep: bool = undefined;
         var xStep: bool = undefined;
 
+        const step: Vector2I = .{
+            .x = if (c.p0.x < c.p2.x) 1 else -1,
+            .y = if (c.p0.y < c.p2.y) 1 else -1,
+        };
+
         while (dy > 0 and dx < 0 and no < out_buffer.len) //if the gradient changes then alg fails
         {
             out_buffer[no] = pos;
@@ -387,7 +390,7 @@ pub const QuadSpline = struct {
             xStep = 2 * e > dx;
             if (xStep) //x step
             {
-                pos.x += s.x;
+                pos.x += step.x;
                 dy += xy;
                 dx += xx;
                 e += dx + xy;
@@ -395,7 +398,7 @@ pub const QuadSpline = struct {
 
             if (yStep) //y step
             {
-                pos.y += s.y;
+                pos.y += step.y;
                 dx += xy;
                 dy += yy;
                 e += dy + xy;
