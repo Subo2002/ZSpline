@@ -266,7 +266,7 @@ pub const QuadSpline = struct {
                 const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = c.p2 };
 
-                const p5: Vector2I = .{ p6.x, p4.y };
+                const p5: Vector2I = .{ .x = p6.x, .y = p4.y };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
