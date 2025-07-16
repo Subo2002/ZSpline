@@ -403,7 +403,7 @@ pub const QuadSpline = struct {
         {
             out_buffer[no] = pos;
             no += 1;
-            if (pos.eql(c.p2))
+            if (pos.eql(p2))
                 break;
 
             yStep = 2 * e < dy;
