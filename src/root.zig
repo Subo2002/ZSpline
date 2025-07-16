@@ -187,8 +187,8 @@ pub const QuadSpline = struct {
             y_then_x: bool,
         };
 
-        const x_valid = t.x < 0 or t.x > 1;
-        const y_valid = t.y < 0 or t.y > 1;
+        const x_valid = t.x >= 0 and t.x <= 1;
+        const y_valid = t.y >= 0 and t.y <= 1;
         const _state: State = .{
             .x_valid = x_valid,
             .y_valid = y_valid,
@@ -302,7 +302,7 @@ pub const QuadSpline = struct {
         const p2: Vector2 = c.p2.toFloat();
 
         const eval = p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t));
-        std.debug.print("eval: ({}, {})", .{ eval.x, eval.y });
+        //std.debug.print("eval: ({}, {})", .{ eval.x, eval.y });
         return eval.round();
     }
 
