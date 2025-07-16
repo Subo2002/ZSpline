@@ -308,6 +308,9 @@ pub const QuadSpline = struct {
 
     //public to be accessible for cubic impl.
     pub fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
+        var p0 = c.p0;
+        var p2 = c.p2;
+
         //translate to simplify
         var p = c.p0.sub(c.p1);
         var q = c.p2.sub(c.p1);
@@ -335,6 +338,10 @@ pub const QuadSpline = struct {
             const temp = p.scale(-1);
             p = q.scale(-1);
             q = temp;
+
+            const temp2 = p0;
+            p0 = p2;
+            p2 = temp2;
 
             cur = p.x * q.y - p.y * q.x;
         }
@@ -382,14 +389,14 @@ pub const QuadSpline = struct {
             (-1) * c01);
         var e: i64 = dx + dy + xy;
 
-        var pos: Vector2I = c.p0;
+        var pos: Vector2I = p0;
         var no: u16 = 0;
         var yStep: bool = undefined;
         var xStep: bool = undefined;
 
         const step: Vector2I = .{
-            .x = if (c.p0.x < c.p2.x) 1 else -1,
-            .y = if (c.p0.y < c.p2.y) 1 else -1,
+            .x = if (p0.x < p2.x) 1 else -1,
+            .y = if (p0.y < p2.y) 1 else -1,
         };
 
         while (dy > 0 and dx < 0 and no < out_buffer.len) //if the gradient changes then alg fails
@@ -420,8 +427,8 @@ pub const QuadSpline = struct {
 
         //algorithm failed so is too close to being a straight line
         //do rest with s straight line
-        if (!pos.eql(c.p2)) {
-            const line: Line = .{ .p = pos, .q = c.p2 };
+        if (!pos.eql(p2)) {
+            const line: Line = .{ .p = pos, .q = p2 };
             const linePixels: []Vector2I = line.draw(out_buffer[no..]);
             no += @intCast(linePixels.len);
         }
