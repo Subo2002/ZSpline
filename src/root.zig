@@ -178,7 +178,7 @@ pub const QuadSpline = struct {
         }
     }
 
-    fn cutToMonotone(c: *const QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
+    pub fn cutToMonotone(c: *const QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
         const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
 
         const State = packed struct {
