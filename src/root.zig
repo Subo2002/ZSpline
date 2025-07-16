@@ -367,7 +367,7 @@ pub const QuadSpline = struct {
         //2nd degree differences, hence CONSTANT
         const xx = 2 * c20;
         const yy = 2 * c02;
-        const xy = c11;
+        const xy = -c11;
 
         //1st degrree differences
         var dx: i64 =
