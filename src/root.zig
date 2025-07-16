@@ -342,12 +342,12 @@ pub const QuadSpline = struct {
 
         const d = p.sub(q);
 
-        const c20: i32 = a.y * a.y;
-        const c11: i32 = -2 * a.x * a.y;
-        const c02: i32 = a.x * a.x;
-        const c10: i32 = 2 * d.y * cur;
-        const c01: i32 = -2 * d.x * cur;
-        const c00: i32 = cur * cur;
+        const c20: i64 = a.y * a.y;
+        const c11: i64 = -2 * a.x * a.y;
+        const c02: i64 = a.x * a.x;
+        const c10: i64 = 2 * d.y * cur;
+        const c01: i64 = -2 * d.x * cur;
+        const c00: i64 = cur * cur;
         _ = c00;
 
         if (!((q.sub(p)).x >= 0 and (q.sub(p)).y <= 0))
