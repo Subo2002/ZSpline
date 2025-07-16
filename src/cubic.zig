@@ -174,9 +174,9 @@ pub const CubicSpline = struct {
     }
 
     fn reduce(c: *const CubicSpline) [2]QuadSpline {
-        const r = c.p0.add(c.p1.scale(3)).toFloat().scale(1.0 / 4.0);
-        const s = c.p2.scale(3).add(c.p3).toFloat().scale(1.0 / 4.0);
-        const t = r.add(s).scale(1.0 / 2.0).round();
+        const r = c.p0.add(c.p1.scale(3)).toFloat().scale(0.25);
+        const s = c.p2.scale(3).add(c.p3).toFloat().scale(0.25);
+        const t = r.add(s).scale(0.5).round();
         return .{
             .{ .p0 = c.p0, .p1 = r.round(), .p2 = t },
             .{ .p0 = t, .p1 = s.round(), .p2 = c.p3 },
