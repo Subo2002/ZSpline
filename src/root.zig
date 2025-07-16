@@ -320,7 +320,7 @@ pub const QuadSpline = struct {
         p = p.mult(s);
         q = q.mult(s);
 
-        var cur = p.x * q.y - p.y * q.x;
+        var cur: i64 = p.x * q.y - p.y * q.x;
 
         if (cur == 0) //straight line
         {
@@ -347,8 +347,8 @@ pub const QuadSpline = struct {
         const c02: i64 = a.x * a.x;
         const c10: i64 = 2 * d.y * cur;
         const c01: i64 = -2 * d.x * cur;
-        const c00: i64 = cur * cur;
-        _ = c00;
+        //const c00: i64 = cur * cur;
+        //_ = c00;
 
         if (!((q.sub(p)).x >= 0 and (q.sub(p)).y <= 0))
             std.debug.print("FAIL", .{});
