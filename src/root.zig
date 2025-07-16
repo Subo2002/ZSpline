@@ -81,7 +81,7 @@ pub const Vector2 = struct {
 
     pub fn round(a: Vector2) Vector2I {
         var b: Vector2I = .{ .x = @intFromFloat(a.x), .y = @intFromFloat(a.y) };
-        if (a.x - @as(f32, @floatFromInt(b.y)) >= 0.5)
+        if (a.x - @as(f32, @floatFromInt(b.x)) >= 0.5)
             b.x += 1;
         if (a.y - @as(f32, @floatFromInt(b.y)) >= 0.5)
             b.y += 1;
@@ -301,7 +301,9 @@ pub const QuadSpline = struct {
         const p1: Vector2 = c.p1.toFloat();
         const p2: Vector2 = c.p2.toFloat();
 
-        return p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t)).round();
+        const eval = p0.scale((1 - t) * (1 - t)).add(p1.scale(2 * (1 - t) * t)).add(p2.scale(t * t));
+        std.debug.print("eval: ({}, {})", .{ eval.x, eval.y });
+        return eval.round();
     }
 
     //public to be accessible for cubic impl.
