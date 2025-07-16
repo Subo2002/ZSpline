@@ -28,19 +28,20 @@ pub const CubicSpline = struct {
         var noPoints: u16 = 0;
         for (0..monotoneParts.len) |i| {
             curves = monotoneParts[i].reduce();
-            std.debug.print("drawing from {}, will be ({}, {})", .{
+            std.debug.print("drawing from {}, will be ({}, {})\n", .{
                 noPoints,
                 curves[0].p0.x,
                 curves[0].p0.y,
             });
             noPoints += @intCast(curves[0].drawMonotone(out_buffer[noPoints..]).len);
             noPoints += @intCast(curves[1].drawMonotone(out_buffer[noPoints..]).len);
-            std.debug.print("last point drawn to {}, was ({}, {})", .{
+            std.debug.print("last point drawn to {}, was ({}, {})\n", .{
                 noPoints - 1,
                 out_buffer[noPoints - 1].x,
                 out_buffer[noPoints - 1].y,
             });
         }
+        std.debug.print("\n", .{});
 
         noPoints = @intCast(if (noPoints > out_buffer.len) out_buffer.len else noPoints);
         return out_buffer[0..noPoints];
