@@ -80,7 +80,7 @@ pub const Vector2 = struct {
     }
 
     pub fn round(a: Vector2) Vector2I {
-        if (a.x > 10_000 or a.y > 10_000) {
+        if (a.x > 10_000 or a.x < -10_000 or a.y > 10_000 or a.y < -10_000) {
             std.debug.print("big value: ({}, {})", .{ a.x, a.y });
             return Vector2I.zero;
         }
