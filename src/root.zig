@@ -80,6 +80,9 @@ pub const Vector2 = struct {
     }
 
     pub fn round(a: Vector2) Vector2I {
+        if (a.x > 10_000) {
+            std.debug.print("big value: {}", a.x);
+        }
         var b: Vector2I = .{ .x = @intFromFloat(a.x), .y = @intFromFloat(a.y) };
         if (a.x - @as(f32, @floatFromInt(b.x)) >= 0.5)
             b.x += 1;
