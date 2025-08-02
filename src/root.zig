@@ -183,10 +183,11 @@ pub const QuadSpline = struct {
     }
 
     pub fn cutToMonotone(c: *const QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
-        const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
+        const d = c.p0.add(c.p1.scale(-2)).add(c.p2);
+        const t = c.p1.sub(c.p0).scale(-1).toFloat().div(d.toFloat());
 
-        const x_valid = t.x >= 0 and t.x <= 1;
-        const y_valid = t.y >= 0 and t.y <= 1;
+        const x_valid = t.x > 0 and t.x < 1 and d.x != 0;
+        const y_valid = t.y > 0 and t.y < 1 and d.y != 0;
         const state_enum = enum(u3) {
             null,
             x_valid,
