@@ -80,7 +80,7 @@ pub const CubicSpline = struct {
 
         //find horizontal turning points
         const discY: i64 = c1.y * @as(i64, @intCast(c1.y)) - 4 * c0.y * @as(i64, @intCast(c2.y));
-        if (discY < 0) {} else if (c2.y == 0 and c1.y == 0) {} else if (c.y == 0) {
+        if (discY < 0) {} else if (c2.y == 0 and c1.y == 0) {} else if (c2.y == 0) {
             points[noPoints] = div(-c0.y, c1.y);
             noPoints += 1;
         } else if (discY == 0) {

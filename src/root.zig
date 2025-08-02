@@ -195,15 +195,15 @@ pub const QuadSpline = struct {
             y_then_x,
         };
         const state: state_enum = if (x_valid and !y_valid) {
-            .x_valid;
+            state_enum.x_valid;
         } else if (y_valid and !x_valid) {
-            .y_valid;
+            state_enum.y_valid;
         } else if (x_valid and y_valid and t.y < t.x) {
-            .y_then_x;
+            state_enum.y_then_x;
         } else if (x_valid and y_valid and t.y >= t.x) {
-            .x_then_y;
+            state_enum.x_then_y;
         } else {
-            .null;
+            state_enum.null;
         };
         switch (state) {
             .null => {
