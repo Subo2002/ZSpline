@@ -194,17 +194,17 @@ pub const QuadSpline = struct {
             x_then_y,
             y_then_x,
         };
-        const state: state_enum = if (x_valid and !y_valid) {
-            state_enum.x_valid;
-        } else if (y_valid and !x_valid) {
-            state_enum.y_valid;
-        } else if (x_valid and y_valid and t.y < t.x) {
-            state_enum.y_then_x;
-        } else if (x_valid and y_valid and t.y >= t.x) {
-            state_enum.x_then_y;
-        } else {
-            state_enum.null;
-        };
+        const state: state_enum =
+            if (x_valid and !y_valid)
+                state_enum.x_valid
+            else if (y_valid and !x_valid)
+                state_enum.y_valid
+            else if (x_valid and y_valid and t.y < t.x)
+                state_enum.y_then_x
+            else if (x_valid and y_valid and t.y >= t.x)
+                state_enum.x_then_y
+            else
+                state_enum.null;
         switch (state) {
             .null => {
                 out_buffer[0] = c.*;
