@@ -33,8 +33,8 @@ pub const CubicSpline = struct {
                 curves[0].p0.x,
                 curves[0].p0.y,
             });
-            noPoints += @intCast(curves[0].drawMonotone(out_buffer[noPoints..]).len);
-            noPoints += @intCast(curves[1].drawMonotone(out_buffer[noPoints..]).len);
+            noPoints += @intCast(curves[0].draw(out_buffer[noPoints..]).len);
+            noPoints += @intCast(curves[1].draw(out_buffer[noPoints..]).len);
             std.debug.print("last point drawn to {}, was ({}, {})\n", .{
                 noPoints - 1,
                 out_buffer[noPoints - 1].x,
@@ -61,8 +61,13 @@ pub const CubicSpline = struct {
         var points: []f64 = points_buffer[0..];
 
         //find vertical turning points
+        //if all ci 0? i.e. derivative is zero, i.e. curve constant, so whole curve a straight horizontal or vertical line, or a point
+        //how handle?
         const discX: i64 = c1.x * @as(i64, @intCast(c1.x)) - 4 * c0.x * @as(i64, @intCast(c2.x));
-        if (discX < 0) {} else if (discX == 0) {
+        if (discX < 0) {} else if (c2.x == 0 and c1.x == 0) {} else if (c2.x == 0) {
+            points[noPoints] = div(-c0.x, c1.x);
+            noPoints += 1;
+        } else if (discX == 0) {
             points[noPoints] = div(-c1.x, 2 * c2.x);
             noPoints += 1;
         } else if (discX > 0) {
@@ -75,7 +80,10 @@ pub const CubicSpline = struct {
 
         //find horizontal turning points
         const discY: i64 = c1.y * @as(i64, @intCast(c1.y)) - 4 * c0.y * @as(i64, @intCast(c2.y));
-        if (discY < 0) {} else if (discY == 0) {
+        if (discY < 0) {} else if (c2.y == 0 and c1.y == 0) {} else if (c.y == 0) {
+            points[noPoints] = div(-c0.y, c1.y);
+            noPoints += 1;
+        } else if (discY == 0) {
             points[noPoints] = div(-c1.y, 2 * c2.y);
             noPoints += 1;
         } else if (discY > 0) {
@@ -93,6 +101,7 @@ pub const CubicSpline = struct {
                 continue;
             } else if (ptr < i) {
                 points[ptr] = points[i];
+                points[i] = -1;
             }
             ptr += 1;
         }

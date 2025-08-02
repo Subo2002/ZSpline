@@ -185,19 +185,8 @@ pub const QuadSpline = struct {
     pub fn cutToMonotone(c: *const QuadSpline, out_buffer: []QuadSpline) []QuadSpline {
         const t = c.p1.sub(c.p0).scale(-1).toFloat().div(c.p0.add(c.p1.scale(-2)).add(c.p2).toFloat());
 
-        const State = packed struct {
-            x_valid: bool,
-            y_valid: bool,
-            y_then_x: bool,
-        };
-
         const x_valid = t.x >= 0 and t.x <= 1;
         const y_valid = t.y >= 0 and t.y <= 1;
-        const _state: State = .{
-            .x_valid = x_valid,
-            .y_valid = y_valid,
-            .y_then_x = x_valid and y_valid and t.y < t.x,
-        };
         const state_enum = enum(u3) {
             null,
             x_valid,
@@ -205,7 +194,17 @@ pub const QuadSpline = struct {
             x_then_y,
             y_then_x,
         };
-        const state: state_enum = @enumFromInt(@as(u3, @bitCast(_state)));
+        const state: state_enum = if (x_valid and !y_valid) {
+            .x_valid;
+        } else if (y_valid and !x_valid) {
+            .y_valid;
+        } else if (x_valid and y_valid and t.y < t.x) {
+            .y_then_x;
+        } else if (x_valid and y_valid and t.y >= t.x) {
+            .x_then_y;
+        } else {
+            .null;
+        };
         switch (state) {
             .null => {
                 out_buffer[0] = c.*;
