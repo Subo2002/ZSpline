@@ -19,7 +19,7 @@ pub const Circle = struct {
         var e2: i32 = 0;
         var pos: Vector2I = .{ .x = 0, .y = c.r };
 
-        var i: i16 = 0;
+        var i: usize = 0;
         while (true) {
             if (i == out_buffer.len)
                 break;
