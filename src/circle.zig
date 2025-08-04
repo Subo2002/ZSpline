@@ -24,10 +24,10 @@ pub const Circle = struct {
             if (i == out_buffer.len)
                 break;
 
-            out_buffer[i] = c.p + pos;
-            out_buffer[i + 1] = c.p + .{ .x = -pos.x, .y = pos.y };
-            out_buffer[i + 2] = c.p + .{ .x = pos.x, .y = -pos.y };
-            out_buffer[i + 3] = c.p + .{ .x = -pos.x, .y = -pos.y };
+            out_buffer[i] = c.p.add(pos);
+            out_buffer[i + 1] = c.p.add(.{ .x = -pos.x, .y = pos.y });
+            out_buffer[i + 2] = c.p.add(.{ .x = pos.x, .y = -pos.y });
+            out_buffer[i + 3] = c.p.add(.{ .x = -pos.x, .y = -pos.y });
             i += 4;
 
             if (pos.eql(.{ .x = c.r, .y = 0 }))
