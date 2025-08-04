@@ -13,7 +13,7 @@ pub const Circle = struct {
         var dy: i32 = 1 - 2 * c.r;
 
         const ddx = 2;
-        const ddy = -2;
+        const ddy = 2;
 
         var e: i32 = dx + dy;
         var e2: i32 = 0;
@@ -34,12 +34,12 @@ pub const Circle = struct {
                 break;
 
             e2 = 2 * e;
-            if (e2 >= dx) {
+            if (e2 <= dx) {
                 dx += ddx;
                 e += dx;
                 pos.x += 1;
             }
-            if (e2 <= dy) {
+            if (e2 >= dy) {
                 dy += ddy;
                 e += dy;
                 pos.y += -1;
