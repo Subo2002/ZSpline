@@ -1,8 +1,8 @@
-const Vector2I = @import("root.zig").Vector2I;
-const Vector2 = @import("root.zig").Vector2;
-const Vector2B = @import("root.zig").Vector2B;
+const Vector2I = @import("vector.zig").Vector2I;
+const Vector2 = @import("vector.zig").Vector2;
+const Vector2B = @import("vector.zig").Vector2B;
 const std = @import("std");
-const QuadSpline = @import("root.zig").QuadSpline;
+const QuadSpline = @import("quad.zig").QuadSpline;
 
 fn div(a: i32, b: i32) f64 {
     return @as(f64, @floatFromInt(a)) / @as(f64, @floatFromInt(b));
