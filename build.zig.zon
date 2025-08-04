@@ -35,12 +35,7 @@
     // `zig build --fetch` can be used to fetch all dependencies of a package, recursively.
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
-    .dependencies = .{
-        .ZSpline = .{
-            .url = "git+https://github.com/Subo2002/ZSpline.git#fe786e4cfaa865fec031481ea8a54cf56c0568c1",
-            .hash = "ZSpline-0.0.0-kRSV_PpcAAA05k7yFFNi5rGiphGocacc8otCGh86WjPx",
-        },
-    },
+    .dependencies = .{},
     .paths = .{
         "build.zig",
         "build.zig.zon",
