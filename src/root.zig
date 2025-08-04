@@ -403,13 +403,11 @@ pub const QuadSpline = struct {
             .y = if (p0.y < p2.y) 1 else -1,
         };
 
+        out_buffer[no] = pos;
+        no += 1;
+
         while (dy > 0 and dx < 0 and no < out_buffer.len) //if the gradient changes then alg fails
         {
-            out_buffer[no] = pos;
-            no += 1;
-            if (pos.eql(p2))
-                break;
-
             yStep = 2 * e < dy;
             xStep = 2 * e > dx;
             if (xStep) //x step
@@ -427,6 +425,11 @@ pub const QuadSpline = struct {
                 dy += yy;
                 e += dy + xy;
             }
+
+            out_buffer[no] = pos;
+            no += 1;
+            if (pos.eql(p2))
+                break;
         }
 
         //algorithm failed so is too close to being a straight line
