@@ -259,6 +259,10 @@ pub const QuadSpline = struct {
             .y = if (p0.y < p2.y) 1 else -1,
         };
 
+        if (out_buffer.len == 0) {
+            return out_buffer;
+        }
+
         out_buffer[no] = pos;
         no += 1;
 
