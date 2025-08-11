@@ -6,39 +6,39 @@ pub const Vector2I = struct {
 
     pub const zero: Vector2I = .{ .x = 0, .y = 0 };
 
-    pub fn init(x: i32, y: i32) Vector2I {
+    pub inline fn init(x: i32, y: i32) Vector2I {
         return .{ .x = x, .y = y };
     }
 
-    pub fn add(a: Vector2I, b: Vector2I) Vector2I {
+    pub inline fn add(a: Vector2I, b: Vector2I) Vector2I {
         return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
-    pub fn sub(a: Vector2I, b: Vector2I) Vector2I {
+    pub inline fn sub(a: Vector2I, b: Vector2I) Vector2I {
         return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
-    pub fn mult(a: Vector2I, b: Vector2I) Vector2I {
+    pub inline fn mult(a: Vector2I, b: Vector2I) Vector2I {
         return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
-    pub fn div(a: Vector2I, b: Vector2I) Vector2I {
+    pub inline fn div(a: Vector2I, b: Vector2I) Vector2I {
         return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
-    pub fn scale(a: Vector2I, c: i32) Vector2I {
+    pub inline fn scale(a: Vector2I, c: i32) Vector2I {
         return .{ .x = a.x * c, .y = a.y * c };
     }
 
-    pub fn toFloat(a: Vector2I) Vector2 {
+    pub inline fn toFloat(a: Vector2I) Vector2 {
         return .{ .x = @floatFromInt(a.x), .y = @floatFromInt(a.y) };
     }
 
-    pub fn toDouble(a: Vector2I) Vector2B {
+    pub inline fn toDouble(a: Vector2I) Vector2B {
         return .{ .x = @floatFromInt(a.x), .y = @floatFromInt(a.y) };
     }
 
-    pub fn eql(a: Vector2I, b: Vector2I) bool {
+    pub inline fn eql(a: Vector2I, b: Vector2I) bool {
         return a.x == b.x and a.y == b.y;
     }
 };
@@ -49,35 +49,35 @@ pub const Vector2 = struct {
 
     pub const zero: Vector2 = .{ .x = 0, .y = 0 };
 
-    pub fn init(x: f32, y: f32) Vector2 {
+    pub inline fn init(x: f32, y: f32) Vector2 {
         return .{ .x = x, .y = y };
     }
 
-    pub fn add(a: Vector2, b: Vector2) Vector2 {
+    pub inline fn add(a: Vector2, b: Vector2) Vector2 {
         return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
-    pub fn sub(a: Vector2, b: Vector2) Vector2 {
+    pub inline fn sub(a: Vector2, b: Vector2) Vector2 {
         return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
-    pub fn mult(a: Vector2, b: Vector2) Vector2 {
+    pub inline fn mult(a: Vector2, b: Vector2) Vector2 {
         return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
-    pub fn div(a: Vector2, b: Vector2) Vector2 {
+    pub inline fn div(a: Vector2, b: Vector2) Vector2 {
         return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
-    pub fn scale(a: Vector2, c: f32) Vector2 {
+    pub inline fn scale(a: Vector2, c: f32) Vector2 {
         return .{ .x = a.x * c, .y = a.y * c };
     }
 
-    pub fn toVector2B(a: Vector2) Vector2B {
+    pub inline fn toVector2B(a: Vector2) Vector2B {
         return .{ .x = a.x, .y = a.y };
     }
 
-    pub fn round(a: Vector2) Vector2I {
+    pub inline fn round(a: Vector2) Vector2I {
         if (a.x > 10_000.0 or a.x < -10_000.0 or a.y > 10_000.0 or a.y < -10_000.0) {
             std.debug.print("big value: ({}, {})", .{ a.x, a.y });
             return Vector2I.zero;
@@ -90,8 +90,30 @@ pub const Vector2 = struct {
         return b;
     }
 
-    pub fn eql(a: Vector2, b: Vector2) bool {
+    pub inline fn eql(a: Vector2, b: Vector2) bool {
         return a.x == b.x and a.y == b.y;
+    }
+
+    pub inline fn length(a: Vector2) f32 {
+        return std.math.sqrt(a.x * a.x + a.y * a.y);
+    }
+
+    pub inline fn normalize(a: Vector2) Vector2 {
+        return a.scale(1 / length(a));
+    }
+
+    pub inline fn lengthSquared(a: Vector2) f32 {
+        return a.x * a.x + a.y * a.y;
+    }
+
+    pub inline fn dircVec(a: f32) Vector2 {
+        return init(std.math.cos(a), std.math.sin(a));
+    }
+
+    pub inline fn compAngle(a: Vector2) f32 {
+        const angle: f64 = std.math.atan(a.y / a.x);
+        if (a.x < 0) angle += if (a.y >= 0) std.math.pi else -std.math.pi;
+        return @floatCast(angle);
     }
 };
 
@@ -101,38 +123,38 @@ pub const Vector2B = struct {
 
     pub const zero: Vector2B = .{ .x = 0, .y = 0 };
 
-    pub fn init(x: f64, y: f64) Vector2B {
+    pub inline fn init(x: f64, y: f64) Vector2B {
         return .{ .x = x, .y = y };
     }
 
-    pub fn add(a: Vector2B, b: Vector2B) Vector2B {
+    pub inline fn add(a: Vector2B, b: Vector2B) Vector2B {
         return .{ .x = a.x + b.x, .y = a.y + b.y };
     }
 
-    pub fn sub(a: Vector2B, b: Vector2B) Vector2B {
+    pub inline fn sub(a: Vector2B, b: Vector2B) Vector2B {
         return .{ .x = a.x - b.x, .y = a.y - b.y };
     }
 
-    pub fn mult(a: Vector2B, b: Vector2B) Vector2B {
+    pub inline fn mult(a: Vector2B, b: Vector2B) Vector2B {
         return .{ .x = a.x * b.x, .y = a.y * b.y };
     }
 
-    pub fn div(a: Vector2B, b: Vector2B) Vector2B {
+    pub inline fn div(a: Vector2B, b: Vector2B) Vector2B {
         return .{ .x = a.x / b.x, .y = a.y / b.y };
     }
 
-    pub fn scale(a: Vector2B, c: f64) Vector2B {
+    pub inline fn scale(a: Vector2B, c: f64) Vector2B {
         return .{ .x = a.x * c, .y = a.y * c };
     }
 
-    pub fn trunc(a: Vector2B) Vector2 {
+    pub inline fn trunc(a: Vector2B) Vector2 {
         return .{
             .x = @floatCast(a.x),
             .y = @floatCast(a.y),
         };
     }
 
-    pub fn round(a: Vector2) Vector2I {
+    pub inline fn round(a: Vector2) Vector2I {
         var b: Vector2I = .{ .x = @intFromFloat(a.x), .y = @intFromFloat(a.y) };
         if (a.x - @as(f64, @floatFromInt(b.y)) >= 0.5)
             b.x += 1;
@@ -141,7 +163,15 @@ pub const Vector2B = struct {
         return b;
     }
 
-    pub fn eql(a: Vector2B, b: Vector2B) bool {
+    pub inline fn eql(a: Vector2B, b: Vector2B) bool {
         return a.x == b.x and a.y == b.y;
+    }
+
+    pub inline fn length(a: Vector2B) f64 {
+        return std.math.sqrt(a.x * a.x + a.y * a.y);
+    }
+
+    pub inline fn lengthSquared(a: Vector2B) f64 {
+        return a.x * a.x + a.y * a.y;
     }
 };
