@@ -111,7 +111,7 @@ pub const Vector2 = struct {
     }
 
     pub inline fn compAngle(a: Vector2) f32 {
-        const angle: f64 = std.math.atan(a.y / a.x);
+        var angle: f64 = std.math.atan(a.y / a.x);
         if (a.x < 0) angle += if (a.y >= 0) std.math.pi else -std.math.pi;
         return @floatCast(angle);
     }
