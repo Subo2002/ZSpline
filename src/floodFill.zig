@@ -1,5 +1,5 @@
-const Vector2I = @import("vector.zig");
-
+const Vector2I = @import("vector.zig").Vector2I;
+const std = @import("std");
 //first in first out -> depth search -> A* <- if trying to hit everything, then this is more memory intensive (maybe?)
 //last in first out -> width search -> flood <- less memory required, know want to hit everything
 pub const FloodFill = struct {
@@ -8,6 +8,7 @@ pub const FloodFill = struct {
         buffer[0] = start;
         var no: u16 = 1; //start
         var cur: u16 = 0;
+
         while (cur < no) {
             const pos = buffer[cur];
             space[pos.y * width + pos.x] = target;
