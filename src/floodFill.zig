@@ -11,7 +11,7 @@ pub const FloodFill = struct {
 
         while (cur < no) {
             const pos = buffer[cur];
-            space[pos.y * width + pos.x] = target;
+            space[@intCast(pos.y * width + pos.x)] = target;
             inline for (0..4) |dir| {
                 const offset = switch (dir) {
                     0 => Vector2I{ .x = 0, .y = 1 },
