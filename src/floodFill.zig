@@ -18,6 +18,7 @@ pub const FloodFill = struct {
                     1 => Vector2I{ .x = 1, .y = 0 },
                     2 => Vector2I{ .x = 0, .y = -1 },
                     3 => Vector2I{ .x = -1, .y = 0 },
+                    else => unreachable,
                 };
                 const test_pos = pos.add(offset);
                 if (space[@intCast(test_pos.y * width + test_pos.x)] == target) continue;
