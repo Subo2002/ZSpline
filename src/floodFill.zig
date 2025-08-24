@@ -24,6 +24,7 @@ pub const FloodFill = struct {
                 const test_pos = pos.add(offset);
                 if (test_pos.y * width + test_pos.x < 0) continue :loop;
                 if (space[@intCast(test_pos.y * width + test_pos.x)] == target) continue :loop;
+                if (no == buffer.len) return;
                 buffer[no] = test_pos;
                 no += 1;
             }
