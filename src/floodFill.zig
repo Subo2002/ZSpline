@@ -4,7 +4,8 @@ const std = @import("std");
 //last in first out -> width search -> flood <- less memory required, know want to hit everything
 pub const FloodFill = struct {
     pub fn fill(start: Vector2I, target: u16, space: []u16, comptime size: Vector2I, buffer: []Vector2I) void {
-        if (start.y * size.x + start.x < 0) return;
+        if (start.y < 0 or start.x < 0) return;
+        if (start.y >= size.y or start.x >= size.x) return;
         if (space[@intCast(start.y * size.x + start.x)] == target) return;
         buffer[0] = start;
         var no: u16 = 1; //start
@@ -22,7 +23,7 @@ pub const FloodFill = struct {
                     else => unreachable,
                 };
                 const test_pos = pos.add(offset);
-                if (test_pos.y * size.x + test_pos.x < 0) continue :loop;
+                if (test_pos.y < 0 or test_pos.x < 0) continue :loop;
                 if (test_pos.y >= size.y or test_pos.x >= size.x) continue :loop;
                 if (space[@intCast(test_pos.y * size.x + test_pos.x)] == target) continue :loop;
                 if (no == buffer.len) return;
