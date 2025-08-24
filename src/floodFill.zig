@@ -9,7 +9,7 @@ pub const FloodFill = struct {
         var no: u16 = 1; //start
         var cur: u16 = 0;
 
-        while (cur < no) {
+        loop: while (cur < no) {
             const pos = buffer[cur];
             space[@intCast(pos.y * width + pos.x)] = target;
             inline for (0..4) |dir| {
@@ -21,7 +21,7 @@ pub const FloodFill = struct {
                     else => unreachable,
                 };
                 const test_pos = pos.add(offset);
-                if (space[@intCast(test_pos.y * width + test_pos.x)] == target) continue;
+                if (space[@intCast(test_pos.y * width + test_pos.x)] == target) continue :loop;
                 buffer[no] = test_pos;
                 no += 1;
             }
