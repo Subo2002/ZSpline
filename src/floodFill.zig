@@ -27,7 +27,7 @@ pub const FloodFill = struct {
                     test_pos.y < size.y and test_pos.x < size.x and
                     space[@intCast(test_pos.y * size.x + test_pos.x)] != target)
                 {
-                    if (no == buffer.len) return buffer.len - 1;
+                    if (no == buffer.len) return @intCast(buffer.len - 1);
                     buffer[no] = test_pos;
                     no += 1;
                 }
