@@ -8,6 +8,7 @@ pub const FloodFill = struct {
         if (start.y < 0 or start.x < 0) return 0;
         if (start.y >= size.y or start.x >= size.x) return 0;
         if (space[@intCast(start.y * size.x + start.x)] == target) return 0;
+        if (buffer.len == 0) return 0;
         space[@intCast(start.y * size.x + start.x)] = target;
         buffer[0] = start;
         var no: u16 = 1; //start //is number of pixels flooded
