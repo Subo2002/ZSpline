@@ -3,10 +3,10 @@ const std = @import("std");
 //first in first out -> depth search -> A* <- if trying to hit everything, then this is more memory intensive (maybe?)
 //last in first out -> width search -> flood <- less memory required, know want to hit everything
 pub const FloodFill = struct {
-    pub fn fill(start: Vector2I, target: u16, space: []u16, comptime size: Vector2I, buffer: []Vector2I) void {
-        if (start.y < 0 or start.x < 0) return;
-        if (start.y >= size.y or start.x >= size.x) return;
-        if (space[@intCast(start.y * size.x + start.x)] == target) return;
+    pub fn fill(start: Vector2I, target: u16, space: []u16, comptime size: Vector2I, buffer: []Vector2I) u16 {
+        if (start.y < 0 or start.x < 0) return 0;
+        if (start.y >= size.y or start.x >= size.x) return 0;
+        if (space[@intCast(start.y * size.x + start.x)] == target) return 0;
         buffer[0] = start;
         var no: u16 = 1; //start
         var cur: u16 = 0;
@@ -27,12 +27,13 @@ pub const FloodFill = struct {
                     test_pos.y < size.y and test_pos.x < size.x and
                     space[@intCast(test_pos.y * size.x + test_pos.x)] != target)
                 {
-                    if (no == buffer.len) return;
+                    if (no == buffer.len) return buffer.len - 1;
                     buffer[no] = test_pos;
                     no += 1;
                 }
             }
             cur += 1;
         }
+        return no;
     }
 };
