@@ -2,18 +2,19 @@ const Vector2I = @import("vector.zig").Vector2I;
 const std = @import("std");
 //first in first out -> depth search -> A* <- if trying to hit everything, then this is more memory intensive (maybe?)
 //last in first out -> width search -> flood <- less memory required, know want to hit everything
+//NOTE: buffer contains every pixel it floods exactly once
 pub const FloodFill = struct {
     pub fn fill(start: Vector2I, target: u16, space: []u16, comptime size: Vector2I, buffer: []Vector2I) u16 {
         if (start.y < 0 or start.x < 0) return 0;
         if (start.y >= size.y or start.x >= size.x) return 0;
         if (space[@intCast(start.y * size.x + start.x)] == target) return 0;
+        space[@intCast(start.y * size.x + start.x)] = target;
         buffer[0] = start;
-        var no: u16 = 1; //start
-        var cur: u16 = 0;
+        var no: u16 = 1; //start //is number of pixels flooded
+        var cur: u16 = 0; //is current pixel having it's neighbors flooded
 
         while (cur < no) {
             const pos = buffer[cur];
-            space[@intCast(pos.y * size.x + pos.x)] = target;
             inline for (0..4) |dir| {
                 const offset = switch (dir) {
                     0 => Vector2I{ .x = 0, .y = 1 },
@@ -28,6 +29,7 @@ pub const FloodFill = struct {
                     space[@intCast(test_pos.y * size.x + test_pos.x)] != target)
                 {
                     if (no == buffer.len) return @intCast(buffer.len - 1);
+                    space[@intCast(test_pos.y * size.x + test_pos.x)] = target;
                     buffer[no] = test_pos;
                     no += 1;
                 }
