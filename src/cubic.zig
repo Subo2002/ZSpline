@@ -143,7 +143,7 @@ pub const CubicSpline = struct {
         return buffer;
     }
 
-    fn evaluate(c: *const CubicSpline, t: f64) Vector2I {
+    pub fn evaluate(c: *const CubicSpline, t: f64) Vector2I {
         const c0 = c.p0.toDouble();
         const c1 = (c.p1.sub(c.p0)).scale(3).toDouble();
         const c2 = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(3).toDouble();
