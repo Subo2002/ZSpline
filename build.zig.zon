@@ -35,7 +35,16 @@
     // `zig build --fetch` can be used to fetch all dependencies of a package, recursively.
     // Once all dependencies are fetched, `zig build` no longer requires
     // internet connectivity.
-    .dependencies = .{},
+    .dependencies = .{
+        .zstbi = .{
+            .url = "git+https://github.com/zig-gamedev/zstbi#a70604a93988ee553d0ae6a3871726270a6025d5",
+            .hash = "zstbi-0.11.0-dev-L0Ea_9WVBwAO8t0Qbr87vnCEf1QBcNQHbV-O_D0UWYqT",
+        },
+        .ZSMath = .{
+            .url = "git+https://github.com/Subo2002/ZSMath#8473303eeb9ec5dd59db61eb557cde1f09575644",
+            .hash = "ZSMath-0.0.0-xSatLi1eAACOnPI_GecuDkkwyjrMXhbphOJnw_IpBE0o",
+        },
+    },
     .paths = .{
         "build.zig",
         "build.zig.zon",

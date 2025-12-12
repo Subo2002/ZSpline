@@ -1,4 +1,4 @@
-const Vector2I = @import("vector.zig").Vector2I;
+const Vector2I = @import("zsmath").Vector2I;
 const std = @import("std");
 //first in first out -> depth search -> A* <- if trying to hit everything, then this is more memory intensive (maybe?)
 //last in first out -> width search -> flood <- less memory required, know want to hit everything

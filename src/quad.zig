@@ -1,6 +1,6 @@
-const Vector2 = @import("vector.zig").Vector2;
-const Vector2I = @import("vector.zig").Vector2I;
-const Vector2B = @import("vector.zig").Vector2B;
+const Vector2 = @import("zsmath").Vector2;
+const Vector2I = @import("zsmath").Vector2I;
+const Vector2B = @import("zsmath").Vector2B;
 const Line = @import("line.zig").Line;
 const std = @import("std");
 

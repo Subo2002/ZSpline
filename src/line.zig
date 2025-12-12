@@ -1,4 +1,4 @@
-const Vector2I = @import("vector.zig").Vector2I;
+const Vector2I = @import("zsmath").Vector2I;
 
 pub const Line = struct {
     p: Vector2I,
