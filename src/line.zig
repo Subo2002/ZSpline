@@ -42,3 +42,13 @@ pub const Line = struct {
         return out_buffer[0..i];
     }
 };
+
+test "line works" {
+    const line = Line{
+        .p = .zero,
+        .q = .init(32, 32),
+    };
+    var buffer: [64]Vector2I = undefined;
+    const points = line.draw(buffer[0..]);
+    try @import("std").testing.expect(points.len > 0);
+}
