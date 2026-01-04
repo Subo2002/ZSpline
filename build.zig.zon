@@ -41,8 +41,8 @@
             .hash = "zstbi-0.11.0-dev-L0Ea_9WVBwAO8t0Qbr87vnCEf1QBcNQHbV-O_D0UWYqT",
         },
         .ZSMath = .{
-            .url = "git+https://github.com/Subo2002/ZSMath#e861c0bbd4fdddca7f0e0204cd8c6019ab9b3302",
-            .hash = "ZSMath-0.0.0-xSatLutgAAB-QjZfB7m2Vr1KtvgPVss8md84UF-5YHA1",
+            .url = "git+https://github.com/Subo2002/ZSMath#457262db8cfe98c1732de4a67bc0a4e20c095693",
+            .hash = "ZSMath-0.0.0-xSatLoVhAABo9xzBk0MNBM-vMG-y9P6LLfpPOyB4Zkpp",
         },
     },
     .paths = .{
