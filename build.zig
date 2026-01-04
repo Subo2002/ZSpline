@@ -28,7 +28,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    _ = b.addModule("root", .{
+    const module = b.addModule("root", .{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
@@ -36,6 +36,7 @@ pub fn build(b: *std.Build) void {
 
     const zsmath = b.dependency("ZSMath", .{});
     lib_mod.addImport("zsmath", zsmath.module("root"));
+    module.addImport("zsmath", zsmath.module("root"));
 
     // Now, we will create a static library based on the module we created above.
     // This creates a `std.Build.Step.Compile`, which is the build step responsible
