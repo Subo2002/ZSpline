@@ -4,6 +4,13 @@ pub const Line = struct {
     p: Vector2I,
     q: Vector2I,
 
+    pub fn init(p: Vector2I, q: Vector2I) Line {
+        return Line{
+            .p = p,
+            .q = q,
+        };
+    }
+
     pub fn draw(c: *const Line, out_buffer: []Vector2I) []Vector2I {
         var i: usize = 0;
 

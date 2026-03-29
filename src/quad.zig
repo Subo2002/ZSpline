@@ -9,6 +9,14 @@ pub const QuadSpline = struct {
     p1: Vector2I,
     p2: Vector2I,
 
+    pub fn init(p0: Vector2I, p1: Vector2I, p2: Vector2I) QuadSpline {
+        return QuadSpline{
+            .p0 = p0,
+            .p1 = p1,
+            .p2 = p2,
+        };
+    }
+
     const errors = error{
         weird,
     };

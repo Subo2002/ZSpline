@@ -14,6 +14,15 @@ pub const CubicSpline = struct {
     p2: Vector2I,
     p3: Vector2I,
 
+    pub fn init(p0: Vector2I, p1: Vector2I, p2: Vector2I, p3: Vector2I) CubicSpline {
+        return CubicSpline{
+            .p0 = p0,
+            .p1 = p1,
+            .p2 = p2,
+            .p3 = p3,
+        };
+    }
+
     pub fn draw(c: *const CubicSpline, out_buffer: []Vector2I) []Vector2I {
         var monotone_parts_buffer = [1]CubicSpline{.{
             .p0 = .zero,
