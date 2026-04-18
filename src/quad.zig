@@ -1,15 +1,15 @@
 const Vector2 = @import("zsmath").Vector2;
-const Vector2I = @import("zsmath").Vector2I;
+const Vector2I32 = @import("zsmath").Vector2Int(i32);
 const Vector2B = @import("zsmath").Vector2B;
 const Line = @import("line.zig").Line;
 const std = @import("std");
 
 pub const QuadSpline = struct {
-    p0: Vector2I,
-    p1: Vector2I,
-    p2: Vector2I,
+    p0: Vector2I32,
+    p1: Vector2I32,
+    p2: Vector2I32,
 
-    pub fn init(p0: Vector2I, p1: Vector2I, p2: Vector2I) QuadSpline {
+    pub fn init(p0: Vector2I32, p1: Vector2I32, p2: Vector2I32) QuadSpline {
         return QuadSpline{
             .p0 = p0,
             .p1 = p1,
@@ -21,7 +21,7 @@ pub const QuadSpline = struct {
         weird,
     };
 
-    pub fn draw(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *const QuadSpline, out_buffer: []Vector2I32) []Vector2I32 {
         var curve_buffer = [1]QuadSpline{.{
             .p0 = .zero,
             .p1 = .zero,
@@ -81,15 +81,15 @@ pub const QuadSpline = struct {
                 const p2: Vector2 = c.p2.toFloat();
 
                 //find the point to cut at
-                const p4: Vector2I = c.evaluate(t.x);
+                const p4: Vector2I32 = c.evaluate(t.x);
                 const _p4: Vector2 = p4.toFloat();
 
                 //find y-intersections with axes of the spline
                 const t3: f32 = (_p4.x - p0.x) / (p1.x - p0.x);
-                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
+                const p3: Vector2I32 = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
                 const t5: f32 = (_p4.x - p2.x) / (p1.x - p2.x);
-                const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
+                const p5: Vector2I32 = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
                 out_buffer[0] = .{ .p0 = c.p0, .p1 = p3, .p2 = p4 };
@@ -102,15 +102,15 @@ pub const QuadSpline = struct {
                 const p2: Vector2 = c.p2.toFloat();
 
                 //find the point to cut at
-                const p4: Vector2I = c.evaluate(t.y);
+                const p4: Vector2I32 = c.evaluate(t.y);
                 const _p4: Vector2 = p4.toFloat();
 
                 //find y-intersections with axes of the spline
                 const t3: f32 = (_p4.y - p0.y) / (p1.y - p0.y);
-                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
+                const p3: Vector2I32 = p0.scale(1 - t3).add(p1.scale(t3)).round();
 
                 const t5: f32 = (_p4.y - p2.y) / (p1.y - p2.y);
-                const p5: Vector2I = p2.scale(1 - t5).add(p1.scale(t5)).round();
+                const p5: Vector2I32 = p2.scale(1 - t5).add(p1.scale(t5)).round();
 
                 //get the new splines
                 out_buffer[0] = .{ .p0 = c.p0, .p1 = p3, .p2 = p4 };
@@ -122,19 +122,19 @@ pub const QuadSpline = struct {
                 const p1: Vector2 = c.p1.toFloat();
                 const p2: Vector2 = c.p2.toFloat();
 
-                const p4: Vector2I = c.evaluate(t.y);
+                const p4: Vector2I32 = c.evaluate(t.y);
                 const _p4: Vector2 = p4.toFloat();
                 const t3: f32 = (_p4.y - p0.y) / (p1.y - p0.y);
-                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
+                const p3: Vector2I32 = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = c.p0, .p1 = p3, .p2 = p4 };
 
-                const p6: Vector2I = c.evaluate(t.x);
+                const p6: Vector2I32 = c.evaluate(t.x);
                 const _p6: Vector2 = p6.toFloat();
                 const t7: f32 = (_p6.x - p2.x) / (p1.x - p2.x);
-                const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
+                const p7: Vector2I32 = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = c.p2 };
 
-                const p5: Vector2I = .{ .x = p6.x, .y = p4.y };
+                const p5: Vector2I32 = .{ .x = p6.x, .y = p4.y };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
@@ -144,19 +144,19 @@ pub const QuadSpline = struct {
                 const p1: Vector2 = c.p1.toFloat();
                 const p2: Vector2 = c.p2.toFloat();
 
-                const p4: Vector2I = c.evaluate(t.x);
+                const p4: Vector2I32 = c.evaluate(t.x);
                 const _p4: Vector2 = p4.toFloat();
                 const t3: f32 = (_p4.x - p0.x) / (p1.x - p0.x);
-                const p3: Vector2I = p0.scale(1 - t3).add(p1.scale(t3)).round();
+                const p3: Vector2I32 = p0.scale(1 - t3).add(p1.scale(t3)).round();
                 out_buffer[0] = .{ .p0 = c.p0, .p1 = p3, .p2 = p4 };
 
-                const p6: Vector2I = c.evaluate(t.y);
+                const p6: Vector2I32 = c.evaluate(t.y);
                 const _p6: Vector2 = p6.toFloat();
                 const t7: f32 = (_p6.y - p2.y) / (p1.y - p2.y);
-                const p7: Vector2I = p2.scale(1 - t7).add(p1.scale(t7)).round();
+                const p7: Vector2I32 = p2.scale(1 - t7).add(p1.scale(t7)).round();
                 out_buffer[2] = .{ .p0 = p6, .p1 = p7, .p2 = c.p2 };
 
-                const p5: Vector2I = .{ .x = p4.x, .y = p6.y };
+                const p5: Vector2I32 = .{ .x = p4.x, .y = p6.y };
                 out_buffer[1] = .{ .p0 = p4, .p1 = p5, .p2 = p6 };
 
                 return out_buffer[0..3];
@@ -164,7 +164,7 @@ pub const QuadSpline = struct {
         }
     }
 
-    fn evaluate(c: *const QuadSpline, t: f32) Vector2I {
+    fn evaluate(c: *const QuadSpline, t: f32) Vector2I32 {
         const p0: Vector2 = c.p0.toFloat();
         const p1: Vector2 = c.p1.toFloat();
         const p2: Vector2 = c.p2.toFloat();
@@ -175,7 +175,7 @@ pub const QuadSpline = struct {
     }
 
     //public to be accessible for cubic impl.
-    pub fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I) []Vector2I {
+    pub fn drawMonotone(c: *const QuadSpline, out_buffer: []Vector2I32) []Vector2I32 {
         var p0 = c.p0;
         var p2 = c.p2;
 
@@ -184,7 +184,7 @@ pub const QuadSpline = struct {
         var q = c.p2.sub(c.p1);
 
         //find orientation
-        const s: Vector2I = .{
+        const s: Vector2I32 = .{
             .x = if ((q.sub(p)).x >= 0) 1 else -1,
             .y = if ((q.sub(p)).y <= 0) 1 else -1,
         };
@@ -257,12 +257,12 @@ pub const QuadSpline = struct {
             (-1) * c01);
         var e: i64 = dx + dy + xy;
 
-        var pos: Vector2I = p0;
+        var pos: Vector2I32 = p0;
         var no: u16 = 0;
         var yStep: bool = undefined;
         var xStep: bool = undefined;
 
-        const step: Vector2I = .{
+        const step: Vector2I32 = .{
             .x = if (p0.x < p2.x) 1 else -1,
             .y = if (p0.y < p2.y) 1 else -1,
         };
@@ -304,7 +304,7 @@ pub const QuadSpline = struct {
         //do rest with s straight line
         if (!pos.eql(p2)) {
             const line: Line = .{ .p = pos, .q = p2 };
-            const linePixels: []Vector2I = line.draw(out_buffer[no..]);
+            const linePixels: []Vector2I32 = line.draw(out_buffer[no..]);
             no += @intCast(linePixels.len);
         }
 

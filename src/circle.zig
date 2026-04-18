@@ -1,14 +1,14 @@
-const Vector2I = @import("zsmath").Vector2I;
+const Vector2I32 = @import("zsmath").Vector2Int(i32);
 
 pub const Circle = struct {
-    p: Vector2I,
+    p: Vector2I32,
     r: i16,
 
-    pub fn init(p: Vector2I, r: i16) Circle {
+    pub fn init(p: Vector2I32, r: i16) Circle {
         return .{ .p = p, .r = r };
     }
 
-    pub fn draw(c: *const Circle, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *const Circle, out_buffer: []Vector2I32) []Vector2I32 {
         var dx: i32 = 1;
         var dy: i32 = 1 - 2 * c.r;
 
@@ -17,7 +17,7 @@ pub const Circle = struct {
 
         var e: i32 = dx + dy;
         var e2: i32 = 0;
-        var pos: Vector2I = .{ .x = 0, .y = c.r };
+        var pos: Vector2I32 = .{ .x = 0, .y = c.r };
 
         var i: usize = 0;
         while (true) {

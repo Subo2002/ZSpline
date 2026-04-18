@@ -1,4 +1,4 @@
-const Vector2I = @import("zsmath").Vector2I;
+const Vector2I32 = @import("zsmath").Vector2Int(i32);
 const Vector2 = @import("zsmath").Vector2;
 const Vector2B = @import("zsmath").Vector2B;
 const std = @import("std");
@@ -9,12 +9,12 @@ fn div(a: i32, b: i32) f64 {
 }
 
 pub const CubicSpline = struct {
-    p0: Vector2I,
-    p1: Vector2I,
-    p2: Vector2I,
-    p3: Vector2I,
+    p0: Vector2I32,
+    p1: Vector2I32,
+    p2: Vector2I32,
+    p3: Vector2I32,
 
-    pub fn init(p0: Vector2I, p1: Vector2I, p2: Vector2I, p3: Vector2I) CubicSpline {
+    pub fn init(p0: Vector2I32, p1: Vector2I32, p2: Vector2I32, p3: Vector2I32) CubicSpline {
         return CubicSpline{
             .p0 = p0,
             .p1 = p1,
@@ -23,7 +23,7 @@ pub const CubicSpline = struct {
         };
     }
 
-    pub fn draw(c: *const CubicSpline, out_buffer: []Vector2I) []Vector2I {
+    pub fn draw(c: *const CubicSpline, out_buffer: []Vector2I32) []Vector2I32 {
         var monotone_parts_buffer = [1]CubicSpline{.{
             .p0 = .zero,
             .p1 = .zero,
@@ -50,9 +50,9 @@ pub const CubicSpline = struct {
         var buffer = out_buffer[0..];
         //compute turning points
         //coefficients of the derivative of Cubic Spline, but took out a factor of 3
-        const c0: Vector2I = c.p1.sub(c.p0);
-        const c1: Vector2I = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(2);
-        const c2: Vector2I = c.p0.scale(-1).add(c.p1.scale(3)).add(c.p2.scale(-3)).add(c.p3);
+        const c0: Vector2I32 = c.p1.sub(c.p0);
+        const c1: Vector2I32 = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(2);
+        const c2: Vector2I32 = c.p0.scale(-1).add(c.p1.scale(3)).add(c.p2.scale(-3)).add(c.p3);
 
         var noPoints: u16 = 0;
         var points_buffer: [4]f64 = .{ 0, 0, 0, 0 };
@@ -152,7 +152,7 @@ pub const CubicSpline = struct {
         return buffer;
     }
 
-    pub fn evaluate(c: *const CubicSpline, t: f64) Vector2I {
+    pub fn evaluate(c: *const CubicSpline, t: f64) Vector2I32 {
         const c0 = c.p0.toDouble();
         const c1 = (c.p1.sub(c.p0)).scale(3).toDouble();
         const c2 = c.p0.add(c.p1.scale(-2)).add(c.p2).scale(3).toDouble();

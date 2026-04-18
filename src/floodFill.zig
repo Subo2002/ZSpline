@@ -1,10 +1,10 @@
-const Vector2I = @import("zsmath").Vector2I;
+const Vector2I32 = @import("zsmath").Vector2Int(i32);
 const std = @import("std");
 //first in first out -> depth search -> A* <- if trying to hit everything, then this is more memory intensive (maybe?)
 //last in first out -> width search -> flood <- less memory required, know want to hit everything
 //NOTE: buffer contains every pixel it floods exactly once
 pub const FloodFill = struct {
-    pub fn fill(start: Vector2I, target: u16, space: []u16, comptime size: Vector2I, buffer: []Vector2I) u16 {
+    pub fn fill(start: Vector2I32, target: u16, space: []u16, comptime size: Vector2I32, buffer: []Vector2I32) u16 {
         if (start.y < 0 or start.x < 0) return 0;
         if (start.y >= size.y or start.x >= size.x) return 0;
         if (space[@intCast(start.y * size.x + start.x)] == target) return 0;
@@ -18,10 +18,10 @@ pub const FloodFill = struct {
             const pos = buffer[cur];
             inline for (0..4) |dir| {
                 const offset = switch (dir) {
-                    0 => Vector2I{ .x = 0, .y = 1 },
-                    1 => Vector2I{ .x = 1, .y = 0 },
-                    2 => Vector2I{ .x = 0, .y = -1 },
-                    3 => Vector2I{ .x = -1, .y = 0 },
+                    0 => Vector2I32{ .x = 0, .y = 1 },
+                    1 => Vector2I32{ .x = 1, .y = 0 },
+                    2 => Vector2I32{ .x = 0, .y = -1 },
+                    3 => Vector2I32{ .x = -1, .y = 0 },
                     else => unreachable,
                 };
                 const test_pos = pos.add(offset);
